@@ -9,7 +9,7 @@
 			<default-locale>en</default-locale>
 		</locale-config>
 		<resource-bundle>
-			<base-name>fr.isima.drivejsf.i18n.Bundle</base-name>
+			<base-name>Bundle</base-name>
 			<var>msg</var>
 		</resource-bundle>
 	</application>

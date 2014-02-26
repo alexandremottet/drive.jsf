@@ -17,6 +17,7 @@
         <setting name="provider-name" value="" />
         <datasource-mapping>
           <factory-entry name="PrimeFacesExperiment" />
+          <factory-entry name="drivejsf_pu" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/java/META-INF/persistence.xml" />
       </configuration>
