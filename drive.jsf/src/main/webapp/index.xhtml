@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="template/layout.xhtml">
+	<ui:define name="body">
+
+		<h1>Welcome !</h1>
+
+		<h:form>
+
+			<h:outputText value="#{msg.loginLabel}" />
+			<h:inputText value="#{mainController.login}" />
+			<h:outputText value="#{msg.passwordLabel}" />
+			<h:inputText value="#{mainController.password}" />
+			<h:commandButton action="#{mainController.doLogin}"
+				value="#{msg.login}" />
+
+		</h:form>
+
+		<h:panelGroup id="truc" layout="block" rendered="#{mainController.user != null}">
+			Welcome <h:outputText value="#{mainController.user.login}" /> !
+		</h:panelGroup>
+
+	</ui:define>
+</ui:composition>
