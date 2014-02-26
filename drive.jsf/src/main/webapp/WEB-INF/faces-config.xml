@@ -5,11 +5,8 @@
 	version="2.2">
 
 	<application>
-		<locale-config>
-			<default-locale>en</default-locale>
-		</locale-config>
 		<resource-bundle>
-			<base-name>Bundle</base-name>
+			<base-name>i18n.Bundle</base-name>
 			<var>msg</var>
 		</resource-bundle>
 	</application>
