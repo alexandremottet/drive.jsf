@@ -1,4 +1,4 @@
-package fr.isima.javapro.controller;
+package fr.isima.drivejsf.controller;
 
 import java.io.Serializable;
 
@@ -6,8 +6,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import fr.isima.javapro.domain.User;
-import fr.isima.javapro.ejb.ServiceEJB;
+import fr.isima.drivejsf.ejb.ServiceEJB;
+import fr.isima.drivejsf.entity.User;
 
 @ManagedBean
 @SessionScoped
@@ -58,7 +58,7 @@ public class MainController implements Serializable {
 		return password;
 	}
 	/**
-	 * @param email the password to set
+	 * @param password the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;

@@ -6,12 +6,11 @@
 
 	<application>
 		<locale-config>
-			<default-locale>en_US</default-locale>
+			<default-locale>en</default-locale>
 		</locale-config>
 		<resource-bundle>
-			<base-name>fr.isima.javapro.i18n.Bundle</base-name>
+			<base-name>fr.isima.drivejsf.i18n.Bundle</base-name>
 			<var>msg</var>
 		</resource-bundle>
 	</application>
-
 </faces-config>
