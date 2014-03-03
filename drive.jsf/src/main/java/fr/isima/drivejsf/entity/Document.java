@@ -8,19 +8,7 @@ package fr.isima.drivejsf.entity;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -32,32 +20,46 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Document.findAll", query = "SELECT d FROM Document d"),
     @NamedQuery(name = "Document.findById", query = "SELECT d FROM Document d WHERE d.id = :id"),
-    @NamedQuery(name = "Document.findByName", query = "SELECT d FROM Document d WHERE d.name = :name")})
+    @NamedQuery(name = "Document.findByName", query = "SELECT d FROM Document d WHERE d.name = :name"),
+    @NamedQuery(name = "Document.findRootByOwner", query = "SELECT d FROM Document d WHERE d.ownerid = :ownerId AND d.parentid = NULL"),
+    @NamedQuery(name = "Document.findFolderContent", query = "SELECT d FROM Document d WHERE d.parentid = :parentId"),
+    @NamedQuery(name = "Document.findByUri", query = "SELECT d FROM Document d WHERE d.ownerid = :ownerId AND d.uri = :uri"),
+    @NamedQuery(name = "Document.countFolderContent", query = "SELECT COUNT(d) FROM Document d WHERE d.parentid = :parentId")
+})
 public class Document implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
+
     @Size(max = 200)
     @Column(name = "name", length = 200)
     private String name;
+
     @Lob
     @Size(max = 65535)
     @Column(name = "uri", length = 65535)
     private String uri;
-    @OneToMany(mappedBy = "parentid")
+
+    @OneToMany(mappedBy = "parentid", fetch = FetchType.EAGER)
     private List<Document> documentList;
+
     @JoinColumn(name = "parentid", referencedColumnName = "id")
     @ManyToOne
     private Document parentid;
+
     @JoinColumn(name = "ownerid", referencedColumnName = "id")
     @ManyToOne
     private User ownerid;
-    @JoinColumn(name = "blobid", referencedColumnName = "id")
+
+    @JoinColumn(name = "dataid", referencedColumnName = "id")
     @ManyToOne
-    private Blob blobid;
+    private Data dataid;
+
     @OneToMany(mappedBy = "docid")
     private List<Share> shareList;
 
@@ -116,12 +118,12 @@ public class Document implements Serializable {
         this.ownerid = ownerid;
     }
 
-    public Blob getBlobid() {
-        return blobid;
+    public Data getDataid() {
+        return dataid;
     }
 
-    public void setBlobid(Blob blobid) {
-        this.blobid = blobid;
+    public void setDataid(Data dataid) {
+        this.dataid = dataid;
     }
 
     public List<Share> getShareList() {

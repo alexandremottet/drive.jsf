@@ -17,35 +17,39 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "blob", uniqueConstraints = {
+@Table(name = "data", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"hash"})})
 @NamedQueries({
-    @NamedQuery(name = "Blob.findAll", query = "SELECT b FROM Blob b"),
-    @NamedQuery(name = "Blob.findById", query = "SELECT b FROM Blob b WHERE b.id = :id"),
-    @NamedQuery(name = "Blob.findByHash", query = "SELECT b FROM Blob b WHERE b.hash = :hash"),
-    @NamedQuery(name = "Blob.findByCounter", query = "SELECT b FROM Blob b WHERE b.counter = :counter")})
-public class Blob implements Serializable {
+    @NamedQuery(name = "Data.findAll", query = "SELECT d FROM Data d"),
+    @NamedQuery(name = "Data.findById", query = "SELECT d FROM Data d WHERE d.id = :id"),
+    @NamedQuery(name = "Data.findByHash", query = "SELECT d FROM Data d WHERE d.hash = :hash"),
+    @NamedQuery(name = "Data.findByCounter", query = "SELECT d FROM Data d WHERE d.counter = :counter")})
+public class Data implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
+
     @Size(max = 200)
     @Column(name = "hash", length = 200)
     private String hash;
+
     @Lob
     @Column(name = "data")
     private byte[] data;
+
     @Column(name = "counter")
     private Integer counter;
-    @OneToMany(mappedBy = "blobid")
+
+    @OneToMany(mappedBy = "dataid")
     private List<Document> documentList;
 
-    public Blob() {
+    public Data() {
     }
 
-    public Blob(Integer id) {
+    public Data(Integer id) {
         this.id = id;
     }
 
@@ -99,10 +103,10 @@ public class Blob implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Blob)) {
+        if (!(object instanceof Data)) {
             return false;
         }
-        Blob other = (Blob) object;
+        Data other = (Data) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -111,7 +115,7 @@ public class Blob implements Serializable {
 
     @Override
     public String toString() {
-        return "fr.isima.drivejsf.entity.Blob[ id=" + id + " ]";
+        return "fr.isima.drivejsf.entity.Data[ id=" + id + " ]";
     }
     
 }

@@ -9,12 +9,13 @@
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="connection.username">root</property>
     <property name="connection.password">-ergf3qp7421-</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
 
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
 
       <mapping class="fr.isima.drivejsf.entity.User"/>
-      <mapping class="fr.isima.drivejsf.entity.Blob"/>
+      <mapping class="fr.isima.drivejsf.entity.Data"/>
       <mapping class="fr.isima.drivejsf.entity.Share"/>
       <mapping class="fr.isima.drivejsf.entity.Document"/>
 
