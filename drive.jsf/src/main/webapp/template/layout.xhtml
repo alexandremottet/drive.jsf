@@ -10,6 +10,7 @@
 		<ui:insert name="header">
 			<title></title>
 		</ui:insert>
+
 		<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="application/javascript" />
@@ -18,10 +19,8 @@
 	</h:head>
 	
 	<h:body>
-		<ui:insert name="body">
-		</ui:insert>
-		<ui:insert name="script">
-		</ui:insert>
+		<ui:insert name="body"></ui:insert>
+		<ui:insert name="script"></ui:insert>
 	</h:body>
 </f:view>
 </html>
