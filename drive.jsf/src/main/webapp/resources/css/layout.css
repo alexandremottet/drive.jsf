@@ -1,0 +1,18 @@
+.navIcon {
+    margin-right: 5px;
+}
+
+.container {
+    margin-top: 70px !important;
+}
+
+.searchForm {
+    max-width: 300px;
+}
+.searchBtn {
+    padding: 9px 12px !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+    margin-right: 0px !important;
+}

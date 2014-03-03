@@ -7,24 +7,66 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	template="template/layout.xhtml">
+
+    <ui:define name="header">
+        <h:outputStylesheet name="css/index.css"/>
+    </ui:define>
 	<ui:define name="body">
 
-		<h1>Welcome !</h1>
+        <h:panelGroup id="container" layout="block" styleClass="container">
+            <h:panelGroup styleClass="row" layout="block">
+                <h:panelGroup styleClass="col-md-12" layout="block">
+                    <h:panelGroup class="btn-group pull-left itemActionGroup" layout="block">
+                        <button type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-share" layout="inline"></h:panelGroup>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-trash" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
 
-		<h:form>
+                    <h:form styleClass="searchForm pull-right">
+                        <h:panelGroup styleClass="input-group" layout="block">
+                            <p:inputText id="searchInput" styleClass="form-control" label="searchInput" required="true"/>
+                            <p:watermark for="searchInput" value="Search ..." />
+                            <h:panelGroup styleClass="input-group-btn" layout="inline">
+                                <button type="submit" class="btn btn-default searchBtn"><h:panelGroup class="glyphicon glyphicon-search" layout="inline" /></button>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:form>
+                    <h:panelGroup class="btn-group pull-right addFileGroup" layout="block">
+                        <button type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon glyphicon-file" layout="inline"></h:panelGroup>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon glyphicon-folder-open" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
 
-			<h:outputText value="#{msg.loginLabel}" />
-			<h:inputText value="#{mainController.login}" />
-			<h:outputText value="#{msg.passwordLabel}" />
-			<h:inputText value="#{mainController.password}" />
-			<h:commandButton action="#{mainController.doLogin}"
-				value="#{msg.login}" styleClass="btn btn-success" />
 
-		</h:form>
+            <h:panelGroup class="panel panel-default" layout="block">
+                <h:panelGroup class="panel-heading"  layout="block">Documents</h:panelGroup>
 
-		<h:panelGroup id="truc" layout="block" rendered="#{mainController.user != null}">
-			Welcome <h:outputText value="#{mainController.user.login}" /> !
-		</h:panelGroup>
+                <p:dataTable id="documents" var="document" value="#{documentsBean.rootDocuments}" rowKey="#{document.name}" stickyHeader="true">
+                    <p:column headerText="Name">
+                        #{document.name}
+                    </p:column>
 
+                    <p:column headerText="Type">
+                        #{document.type}
+                    </p:column>
+
+                    <p:column headerText="Size" >
+                        #{document.size}
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+
+        </h:panelGroup>
 	</ui:define>
 </ui:composition>
