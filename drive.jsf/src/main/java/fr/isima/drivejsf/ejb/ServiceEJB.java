@@ -1,9 +1,18 @@
 package fr.isima.drivejsf.ejb;
 
 import fr.isima.drivejsf.entity.User;
+import fr.isima.drivejsf.util.HibernateUtil;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
+import fr.isima.drivejsf.entity.User;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+
+import java.util.List;
 
 /**
  * Session Bean implementation class ServiceEJB
@@ -23,11 +32,18 @@ public class ServiceEJB {
     }
     
     public User signIn(String login, String password) {
-    	User user = new User();
 
-    	//em.persist(user);
+        Session s = HibernateUtil.getSession();
+        s.beginTransaction();
+        Query q = s.getNamedQuery("User.findAll");
+
+    	List<User> users = q.list();
+
+        s.getTransaction().commit();
     	
-    	return user;
+    	return users.get(0);
+
+
     }
 
 }
