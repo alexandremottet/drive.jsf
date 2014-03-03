@@ -6,3 +6,30 @@
 .itemActionGroup {
     margin-top: 3px;
 }
+
+.ui-datatable thead th {
+    background: white !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    padding-left: 20px !important;
+    border-top: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-style: none !important;
+    border-bottom-style: solid !important;
+}
+
+.ui-datatable-tablewrapper {
+    padding: 0px 5 0 5 !important;
+}
+
+.ui-widget-content {
+    border-left: white !important;
+    border-right: white !important;
+}
+
+.ui-datatable tbody td {
+    font-size: 14px !important;
+    padding: 10px !important;
+}

@@ -1,8 +1,9 @@
 package fr.isima.drivejsf.controller;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.*;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -18,18 +19,31 @@ public class MainController implements Serializable {
 
 	private static final long serialVersionUID = 3973801993975443027L;
 
+    private List<Document> rootDocuments;
+
 	@EJB
 	private ServiceEJB service;
 	
 	public void doLogin() {
-
         //System.out.println("isRoot : " + service.isRoot ("1"));
         //System.out.println("isFolder : " + service.isFolder ("1"));
         //System.out.println("getList : " + service.getList ("1", null));
         //System.out.println("getList : " + service.getList ("1", "1"));
         //System.out.println("getDocument : " + service.getDocument ("1"));
         //System.out.println("getDocumentForUri : " + service.getDocumentForUri ("2", "aleanar_folder"));
+    }
 
+    @PostConstruct
+    private void postConstruct() {
+        rootDocuments = service.getList ("1", null);
+    }
+
+    public List<Document> getRootDocuments() {
+        return rootDocuments;
+    }
+
+    public void setRootDocuments(List<Document> rootDocuments) {
+        this.rootDocuments = rootDocuments;
     }
 	
 }

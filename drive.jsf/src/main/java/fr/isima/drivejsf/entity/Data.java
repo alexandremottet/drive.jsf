@@ -93,6 +93,23 @@ public class Data implements Serializable {
         this.documentList = documentList;
     }
 
+    public String getDataLenghtAsString() {
+        int o = data.length;
+        double ko = o / 1000.0;
+        double mo = ko / 1000.0;
+        StringBuffer bf = new StringBuffer();
+
+        if (mo > 1) {
+            bf.append(mo).append(" Mo");
+        } else if (ko > 1) {
+            bf.append(ko).append(" Ko");
+        } else {
+            bf.append(o).append(" o");
+        }
+
+        return bf.toString();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

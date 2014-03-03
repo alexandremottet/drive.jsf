@@ -52,17 +52,22 @@
             <h:panelGroup class="panel panel-default" layout="block">
                 <h:panelGroup class="panel-heading"  layout="block">Documents</h:panelGroup>
 
-                <p:dataTable id="documents" var="document" value="#{documentsBean.rootDocuments}" rowKey="#{document.name}" stickyHeader="true">
+                <p:dataTable id="documents" var="document" value="#{mainController.rootDocuments}" rowKey="#{document.name}" stickyHeader="true">
                     <p:column headerText="Name">
                         #{document.name}
                     </p:column>
 
                     <p:column headerText="Type">
-                        #{document.type}
+                        <h:panelGroup rendered="#{document.dataid == null}">
+                            Folder
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{document.dataid != null}">
+                            File
+                        </h:panelGroup>
                     </p:column>
 
                     <p:column headerText="Size" >
-                        #{document.size}
+                        #{document.dataid.dataLenghtAsString}
                     </p:column>
                 </p:dataTable>
             </h:panelGroup>

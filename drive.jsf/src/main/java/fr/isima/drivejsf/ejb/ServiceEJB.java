@@ -8,6 +8,7 @@ import fr.isima.drivejsf.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
