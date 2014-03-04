@@ -57,14 +57,14 @@ public class MainController implements Serializable {
         downloadableDocument = new DefaultStreamedContent(stream, "text/plain", document.getName());
     }
 
-    private void zipFolder (Document folder, ZipOutputStream zos) throws IOException {
+    private void zipFolder (Document folder, ZipOutputStream zos, String root) throws IOException {
         List<Document> children = service.getList(currentUser, folder.getId().toString());
 
         for (Document child : children) {
             if (service.isFolder(child.getId().toString())) {
-                zipFolder(child, zos);
+                zipFolder(child, zos, root + "/" + child.getName());
             } else {
-                ZipEntry entry = new ZipEntry(child.getName());
+                ZipEntry entry = new ZipEntry(root + "/" + child.getName());
                 Data data = child.getDataid();
 
                 entry.setSize(data.getData().length);
@@ -81,7 +81,7 @@ public class MainController implements Serializable {
         InputStream stream;
 
         try {
-            zipFolder(folder, zos);
+            zipFolder(folder, zos, "/" + folder.getName());
             zos.close();
         } catch (IOException e) {
             e.printStackTrace();
