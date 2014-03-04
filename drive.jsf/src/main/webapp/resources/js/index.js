@@ -11,9 +11,9 @@ $("#deleteButton").click(function() {
 });
 
 $("#uploadFileButton").click(function() {
-    $("#tableForm\\:fileUploadComponent").trigger( "click" );
+    $("#uploadForm\\:fileUploadComponent").trigger( "click" );
 });
 
-$("#tableForm\\:fileUploadComponent").on('change', function() {
-    $("#tableForm\\:fileUploadComponentButton").trigger( "click" );
+$("#uploadForm\\:fileUploadComponent").on('change', function() {
+    $("#uploadForm\\:fileUploadComponentButton").trigger( "click" );
 });

@@ -9,13 +9,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 
 import fr.isima.drivejsf.ejb.ServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -30,8 +28,9 @@ public class MainController implements Serializable {
     private StreamedContent downloadableDocument = null;
     private String currentUser = "1";
     private Document currentDocument = null;
+    private UploadedFile file = null;
 
-	@EJB
+    @EJB
 	private ServiceEJB service;
 
 	public void testDAO() {
@@ -90,6 +89,14 @@ public class MainController implements Serializable {
 
         downloadableDocument = new DefaultStreamedContent(stream, "text/plain", folder.getName() + ".zip");
 
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
     }
 
     public List<Document> getRootDocuments() {
@@ -172,5 +179,9 @@ public class MainController implements Serializable {
 
             rootDocuments = service.getList(currentUser, null);
         }
+    }
+
+    public void handleFileUpload() {
+        System.out.println(file.getFileName());
     }
 }
