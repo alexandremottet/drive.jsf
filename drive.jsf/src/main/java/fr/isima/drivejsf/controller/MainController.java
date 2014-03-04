@@ -72,7 +72,6 @@ public class MainController implements Serializable {
         } else {
             downloadableDocument = null;
         }
-        System.out.println(downloadableDocument);
 
         return downloadableDocument;
     }

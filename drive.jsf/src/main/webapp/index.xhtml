@@ -12,14 +12,15 @@
         <h:outputStylesheet name="css/index.css"/>
     </ui:define>
 	<ui:define name="body">
-
         <h:panelGroup id="container" layout="block" styleClass="container">
             <h:panelGroup styleClass="row" layout="block">
                 <h:panelGroup styleClass="col-md-12" layout="block">
+
                     <h:panelGroup class="btn-group pull-left itemActionGroup" layout="block">
-                        <button type="button" class="btn btn-default">
+                        <button id="downloadButton" type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
                         </button>
+
                         <button type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-share" layout="inline"></h:panelGroup>
                         </button>
@@ -49,6 +50,11 @@
             </h:panelGroup>
 
             <h:form id="tableForm">
+                <h:panelGroup styleClass="hiddenAction">
+                    <p:commandButton id="commandButtonDownload" ajax="false">
+                        <p:fileDownload value="#{mainController.downloadableDocument}" />
+                    </p:commandButton>
+                </h:panelGroup>
                 <p:contextMenu for="documents">
                     <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
@@ -82,7 +88,15 @@
                     </p:dataTable>
                 </h:panelGroup>
             </h:form>
-
         </h:panelGroup>
 	</ui:define>
+    <ui:define name="script">
+        <script type="text/javascript">
+            $("#downloadButton").click(function() {
+
+                $(document.getElementById('tableForm:commandButtonDownload')).trigger( "click" );
+            });
+        </script>
+    </ui:define>
 </ui:composition>
+

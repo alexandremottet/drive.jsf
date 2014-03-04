@@ -34,3 +34,7 @@
     padding: 10px !important;
     border: 0px !important;
 }
+
+.hiddenAction {
+    display: none;
+}
