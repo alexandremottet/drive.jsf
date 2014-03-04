@@ -48,29 +48,40 @@
                 </h:panelGroup>
             </h:panelGroup>
 
+            <h:form id="tableForm">
+                <p:contextMenu for="documents">
+                    <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
+                        <p:fileDownload value="#{mainController.downloadableDocument}" />
+                    </p:menuitem>
+                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" actionListener="#{mainController.shareDocument}"/>
+                    <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" actionListener="#{mainController.deleteDocument}"/>
+                </p:contextMenu>
 
-            <h:panelGroup class="panel panel-default" layout="block">
-                <h:panelGroup class="panel-heading"  layout="block">Documents</h:panelGroup>
+                <h:panelGroup class="panel panel-default" layout="block">
+                    <h:panelGroup class="panel-heading"  layout="block">Documents</h:panelGroup>
 
-                <p:dataTable id="documents" var="document" value="#{mainController.rootDocuments}" rowKey="#{document.name}" stickyHeader="true">
-                    <p:column headerText="Name">
-                        #{document.name}
-                    </p:column>
+                    <p:dataTable id="documents" var="document" value="#{mainController.rootDocuments}"
+                                 rowKey="#{document.name}" stickyHeader="true"
+                                 selection="#{mainController.selectedDocument}" selectionMode="single">
+                        <p:column headerText="Name">
+                            #{document.name}
+                        </p:column>
 
-                    <p:column headerText="Type">
-                        <h:panelGroup rendered="#{document.dataid == null}">
-                            Folder
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{document.dataid != null}">
-                            File
-                        </h:panelGroup>
-                    </p:column>
+                        <p:column headerText="Type">
+                            <h:panelGroup rendered="#{document.dataid == null}">
+                                Folder
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{document.dataid != null}">
+                                File
+                            </h:panelGroup>
+                        </p:column>
 
-                    <p:column headerText="Size" >
-                        #{document.dataid.dataLenghtAsString}
-                    </p:column>
-                </p:dataTable>
-            </h:panelGroup>
+                        <p:column headerText="Size" >
+                            #{document.dataid.dataLenghtAsString}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
 
         </h:panelGroup>
 	</ui:define>

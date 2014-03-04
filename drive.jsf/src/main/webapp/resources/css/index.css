@@ -32,4 +32,5 @@
 .ui-datatable tbody td {
     font-size: 14px !important;
     padding: 10px !important;
+    border: 0px !important;
 }
