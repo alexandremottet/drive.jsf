@@ -36,6 +36,10 @@ public class ServiceEJB {
         return new DocumentDAO().isFolder(Integer.parseInt(documentId));
     }
 
+    public void deleteDocument(String documentId) {
+        new DocumentDAO().deleteDocument(Integer.parseInt(documentId));
+    }
+
     public List<Document> getList(String ownerId, String documentId) {
 
         if (documentId == null)

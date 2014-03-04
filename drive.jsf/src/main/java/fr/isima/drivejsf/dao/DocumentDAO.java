@@ -29,6 +29,14 @@ public class DocumentDAO {
 
     }
 
+    public void deleteDocument(int documentId) {
+        Document document = getDocument(documentId);
+        Session session = HibernateUtil.getSession();
+
+        session.delete(document);
+        session.close();
+    }
+
     public boolean isFolder (int documentId) {
 
         Document document = getDocument(documentId);
@@ -98,6 +106,8 @@ public class DocumentDAO {
         if (documents == null) {
             throw new NoDataFoundException();
         }
+
+        session.close();
 
         // Documents
         return documents;

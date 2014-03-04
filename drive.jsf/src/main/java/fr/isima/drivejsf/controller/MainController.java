@@ -32,7 +32,7 @@ public class MainController implements Serializable {
 	@EJB
 	private ServiceEJB service;
 
-	public void doLogin() {
+	public void testDAO() {
         //System.out.println("isRoot : " + service.isRoot ("1"));
         //System.out.println("isFolder : " + service.isFolder ("1"));
         //System.out.println("getList : " + service.getList ("1", null));
@@ -43,7 +43,7 @@ public class MainController implements Serializable {
 
     @PostConstruct
     private void postConstruct() {
-        rootDocuments = service.getList (currentUser, null);
+        rootDocuments = service.getList(currentUser, null);
     }
 
     public List<Document> getRootDocuments() {
@@ -117,4 +117,17 @@ public class MainController implements Serializable {
         }
     }
 
+    public void onDeleteDocument() {
+        Document current = selectedDocument;
+
+        if (current != null) {
+            rootDocuments.clear();
+            selectedDocument = null;
+            currentDocument = null;
+
+            service.deleteDocument(current.getId().toString());
+
+            rootDocuments = service.getList(currentUser, null);
+        }
+    }
 }

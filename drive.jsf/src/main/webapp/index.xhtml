@@ -68,8 +68,8 @@
                     <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
                     </p:menuitem>
-                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" actionListener="#{mainController.shareDocument}"/>
-                    <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" actionListener="#{mainController.deleteDocument}"/>
+                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" action="#{mainController.shareDocument}"/>
+                    <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" ajax="false" action="#{mainController.onDeleteDocument}"/>
                 </p:contextMenu>
 
                 <h:panelGroup class="panel panel-default" layout="block">
@@ -106,12 +106,10 @@
     <ui:define name="script">
         <script type="text/javascript">
             $("#downloadButton").click(function() {
-
                 $(document.getElementById('tableForm:commandButtonDownload')).trigger( "click" );
             });
 
             $("#backButton").click(function() {
-
                 $(document.getElementById('tableForm:commandButtonBack')).trigger( "click" );
             });
         </script>
