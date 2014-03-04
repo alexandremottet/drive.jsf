@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.0.6
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Lun 03 Mars 2014 à 17:50
--- Version du serveur: 5.6.12-log
--- Version de PHP: 5.4.12
+-- Généré le: Mar 04 Mars 2014 à 15:15
+-- Version du serveur: 5.5.33
+-- Version de PHP: 5.5.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de données: `drivejsf`
@@ -28,6 +22,7 @@ USE `drivejsf`;
 -- Structure de la table `data`
 --
 
+DROP TABLE IF EXISTS `data`;
 CREATE TABLE IF NOT EXISTS `data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hash` varchar(200) DEFAULT NULL,
@@ -51,6 +46,7 @@ INSERT INTO `data` (`id`, `hash`, `data`, `counter`) VALUES
 -- Structure de la table `document`
 --
 
+DROP TABLE IF EXISTS `document`;
 CREATE TABLE IF NOT EXISTS `document` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parentid` int(11) DEFAULT NULL,
@@ -71,10 +67,10 @@ CREATE TABLE IF NOT EXISTS `document` (
 INSERT INTO `document` (`id`, `parentid`, `ownerid`, `dataid`, `name`, `uri`) VALUES
 (1, NULL, 1, NULL, 'drusy_folder', 'drusy_folder'),
 (2, NULL, 2, NULL, 'aleanar_folder', 'aleanar_folder'),
-(3, 1, 1, 1, 'drusy_icon', 'drusy_folder/drusy_icon'),
-(4, 2, 2, 2, 'aleanar_icon', 'aleanar_folder/aleanar_icon'),
-(5, NULL, 1, 1, 'drusy_icon', 'drusy_icon'),
-(6, NULL, 2, 2, 'aleanar_icon', 'aleanar_icon'),
+(3, 1, 1, 1, 'drusy_icon.png', 'drusy_folder/drusy_icon.png'),
+(4, 2, 2, 2, 'aleanar_icon.png', 'aleanar_folder/aleanar_icon.png'),
+(5, NULL, 1, 1, 'drusy_icon.png', 'drusy_icon.png'),
+(6, NULL, 2, 2, 'aleanar_icon.png', 'aleanar_icon.png'),
 (7, NULL, 1, NULL, 'empty_folder', 'empty_folder'),
 (8, NULL, 2, NULL, 'empty_folder', 'empty_folder');
 
@@ -84,6 +80,7 @@ INSERT INTO `document` (`id`, `parentid`, `ownerid`, `dataid`, `name`, `uri`) VA
 -- Structure de la table `share`
 --
 
+DROP TABLE IF EXISTS `share`;
 CREATE TABLE IF NOT EXISTS `share` (
   `idshare` int(11) NOT NULL AUTO_INCREMENT,
   `docid` int(11) DEFAULT NULL,
@@ -99,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `share` (
 -- Structure de la table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(200) DEFAULT NULL,
@@ -124,9 +122,9 @@ INSERT INTO `user` (`id`, `login`, `email`) VALUES
 -- Contraintes pour la table `document`
 --
 ALTER TABLE `document`
+  ADD CONSTRAINT `ownerid` FOREIGN KEY (`ownerid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `dataid` FOREIGN KEY (`dataid`) REFERENCES `data` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `ownerid` FOREIGN KEY (`ownerid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `parentid` FOREIGN KEY (`parentid`) REFERENCES `document` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `parentid` FOREIGN KEY (`parentid`) REFERENCES `document` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `share`
@@ -134,7 +132,3 @@ ALTER TABLE `document`
 ALTER TABLE `share`
   ADD CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `docid` FOREIGN KEY (`docid`) REFERENCES `document` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

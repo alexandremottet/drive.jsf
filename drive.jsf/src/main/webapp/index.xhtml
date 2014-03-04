@@ -27,10 +27,10 @@
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
                         </button>
 
-                        <button type="button" class="btn btn-default">
+                        <button id="shareButton" type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-share" layout="inline"></h:panelGroup>
                         </button>
-                        <button type="button" class="btn btn-default">
+                        <button id="deleteButton" type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-trash" layout="inline"></h:panelGroup>
                         </button>
                     </h:panelGroup>
@@ -61,15 +61,16 @@
                     <p:commandButton id="commandButtonDownload" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
                     </p:commandButton>
-                    <p:commandButton id="commandButtonBack" ajax="false" action="#{mainController.onReturnToParent}" />
+                    <p:commandButton id="commandButtonBack" update="documents" ajax="true" action="#{mainController.onReturnToParent}" />
+                    <p:commandButton id="commandButtonDelete" update="documents" ajax="true" action="#{mainController.onDeleteDocument}" />
                 </h:panelGroup>
 
                 <p:contextMenu for="documents">
                     <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
                     </p:menuitem>
-                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" action="#{mainController.shareDocument}"/>
-                    <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" ajax="false" action="#{mainController.onDeleteDocument}"/>
+                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" ajax="true" action="#{mainController.shareDocument}"/>
+                    <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" ajax="true" action="#{mainController.onDeleteDocument}"/>
                 </p:contextMenu>
 
                 <h:panelGroup class="panel panel-default" layout="block">
@@ -111,6 +112,10 @@
 
             $("#backButton").click(function() {
                 $(document.getElementById('tableForm:commandButtonBack')).trigger( "click" );
+            });
+
+            $("#deleteButton").click(function() {
+                $(document.getElementById('tableForm:commandButtonDelete')).trigger( "click" );
             });
         </script>
     </ui:define>

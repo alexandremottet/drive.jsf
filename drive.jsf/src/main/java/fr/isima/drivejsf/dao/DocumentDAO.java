@@ -6,6 +6,7 @@ import fr.isima.drivejsf.exception.NoDataFoundException;
 import fr.isima.drivejsf.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -32,8 +33,13 @@ public class DocumentDAO {
     public void deleteDocument(int documentId) {
         Document document = getDocument(documentId);
         Session session = HibernateUtil.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
 
+        document = (Document) session.merge(document);
         session.delete(document);
+
+        transaction.commit();
         session.close();
     }
 
@@ -107,6 +113,7 @@ public class DocumentDAO {
             throw new NoDataFoundException();
         }
 
+        session.clear();
         session.close();
 
         // Documents

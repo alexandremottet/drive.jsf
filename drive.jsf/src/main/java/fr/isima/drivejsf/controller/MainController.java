@@ -2,6 +2,8 @@ package fr.isima.drivejsf.controller;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -46,6 +48,50 @@ public class MainController implements Serializable {
         rootDocuments = service.getList(currentUser, null);
     }
 
+    private void setFileStreamedContent(Document document) {
+        Data data;
+        InputStream stream;
+
+        data = document.getDataid();
+        stream = new ByteArrayInputStream(data.getData());
+        downloadableDocument = new DefaultStreamedContent(stream, "text/plain", document.getName());
+    }
+
+    private void zipFolder (Document folder, ZipOutputStream zos) throws IOException {
+        List<Document> children = service.getList(currentUser, folder.getId().toString());
+
+        for (Document child : children) {
+            if (service.isFolder(child.getId().toString())) {
+                zipFolder(child, zos);
+            } else {
+                ZipEntry entry = new ZipEntry(child.getName());
+                Data data = child.getDataid();
+
+                entry.setSize(data.getData().length);
+                zos.putNextEntry(entry);
+                zos.write(data.getData());
+                zos.closeEntry();
+            }
+        }
+    }
+
+    private void setFolderStreamContent(Document folder) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+        InputStream stream;
+
+        try {
+            zipFolder(folder, zos);
+            zos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stream = new ByteArrayInputStream(baos.toByteArray());
+
+        downloadableDocument = new DefaultStreamedContent(stream, "text/plain", folder.getName() + ".zip");
+
+    }
+
     public List<Document> getRootDocuments() {
         return rootDocuments;
     }
@@ -64,13 +110,14 @@ public class MainController implements Serializable {
 
     public StreamedContent getDownloadableDocument() {
         Document current = selectedDocument;
-        Data data;
-        InputStream stream;
 
         if (current != null) {
-            data = current.getDataid();
-            stream = new ByteArrayInputStream(data.getData());
-            downloadableDocument = new DefaultStreamedContent(stream, "text/plain", current.getName());
+            if (service.isFolder(current.getId().toString())) {
+                setFolderStreamContent(current);
+            } else {
+                setFileStreamedContent(current);
+            }
+
         } else {
             downloadableDocument = null;
         }
@@ -78,7 +125,7 @@ public class MainController implements Serializable {
         return downloadableDocument;
     }
 
-    public void setDownloadableDocument(StreamedContent downloadableDocument) {
+    public void setDownloadableDocument (StreamedContent downloadableDocument) {
         this.downloadableDocument = downloadableDocument;
     }
 
@@ -96,7 +143,7 @@ public class MainController implements Serializable {
         }
     }
 
-    public void onReturnToParent() {
+    public void onReturnToParent () {
         List<Document> tmp;
         Document parent;
         String parentId = null;
@@ -117,15 +164,11 @@ public class MainController implements Serializable {
         }
     }
 
-    public void onDeleteDocument() {
+    public void onDeleteDocument () {
         Document current = selectedDocument;
 
         if (current != null) {
-            rootDocuments.clear();
-            selectedDocument = null;
-            currentDocument = null;
-
-            service.deleteDocument(current.getId().toString());
+            service.deleteDocument (current.getId().toString());
 
             rootDocuments = service.getList(currentUser, null);
         }
