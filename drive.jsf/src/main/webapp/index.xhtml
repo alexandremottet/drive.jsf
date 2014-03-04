@@ -16,6 +16,12 @@
             <h:panelGroup styleClass="row" layout="block">
                 <h:panelGroup styleClass="col-md-12" layout="block">
 
+                    <h:panelGroup class="btn-group pull-left backGroup" layout="block">
+                        <button id="backButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-arrow-left" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+
                     <h:panelGroup class="btn-group pull-left itemActionGroup" layout="block">
                         <button id="downloadButton" type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
@@ -50,11 +56,14 @@
             </h:panelGroup>
 
             <h:form id="tableForm">
+                <!-- Hidden actions triggered with JavaScript -->
                 <h:panelGroup styleClass="hiddenAction">
                     <p:commandButton id="commandButtonDownload" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
                     </p:commandButton>
+                    <p:commandButton id="commandButtonBack" ajax="false" action="#{mainController.onReturnToParent}" />
                 </h:panelGroup>
+
                 <p:contextMenu for="documents">
                     <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
@@ -69,6 +78,10 @@
                     <p:dataTable id="documents" var="document" value="#{mainController.rootDocuments}"
                                  rowKey="#{document.name}" stickyHeader="true"
                                  selection="#{mainController.selectedDocument}" selectionMode="single">
+
+                        <p:ajax event="rowDblselect" listener="#{mainController.onDocumentDblClck}"
+                                update="documents" />
+
                         <p:column headerText="Name">
                             #{document.name}
                         </p:column>
@@ -95,6 +108,11 @@
             $("#downloadButton").click(function() {
 
                 $(document.getElementById('tableForm:commandButtonDownload')).trigger( "click" );
+            });
+
+            $("#backButton").click(function() {
+
+                $(document.getElementById('tableForm:commandButtonBack')).trigger( "click" );
             });
         </script>
     </ui:define>

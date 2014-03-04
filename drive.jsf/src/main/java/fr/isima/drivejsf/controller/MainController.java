@@ -26,10 +26,12 @@ public class MainController implements Serializable {
     private List<Document> rootDocuments;
     private Document selectedDocument = null;
     private StreamedContent downloadableDocument = null;
+    private String currentUser = "1";
+    private Document currentDocument = null;
 
 	@EJB
 	private ServiceEJB service;
-	
+
 	public void doLogin() {
         //System.out.println("isRoot : " + service.isRoot ("1"));
         //System.out.println("isFolder : " + service.isFolder ("1"));
@@ -41,7 +43,7 @@ public class MainController implements Serializable {
 
     @PostConstruct
     private void postConstruct() {
-        rootDocuments = service.getList ("1", null);
+        rootDocuments = service.getList (currentUser, null);
     }
 
     public List<Document> getRootDocuments() {
@@ -78,6 +80,41 @@ public class MainController implements Serializable {
 
     public void setDownloadableDocument(StreamedContent downloadableDocument) {
         this.downloadableDocument = downloadableDocument;
+    }
+
+    public void onDocumentDblClck() {
+        Document current = selectedDocument;
+        List<Document> tmp;
+
+        if (current != null) {
+            tmp = service.getList (currentUser, current.getId().toString());
+
+            if (tmp != null) {
+                rootDocuments = tmp;
+                currentDocument = current;
+            }
+        }
+    }
+
+    public void onReturnToParent() {
+        List<Document> tmp;
+        Document parent;
+        String parentId = null;
+
+        if (rootDocuments != null && currentDocument != null) {
+            parent = currentDocument.getParentid();
+
+            if (parent != null) {
+                parentId = parent.getId().toString();
+            }
+
+            tmp = service.getList (currentUser, parentId);
+
+            if (tmp != null) {
+                rootDocuments = tmp;
+                currentDocument = parent;
+            }
+        }
     }
 
 }
