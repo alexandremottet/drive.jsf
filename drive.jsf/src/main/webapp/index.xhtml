@@ -77,6 +77,7 @@
                     <!-- Upload file action -->
                     <p:fileUpload id="fileUploadComponent" update="documents" fileUploadListener="#{mainController.handleFileUpload}" mode="advanced" multiple="true" />
 
+                    <!-- Share document action -->
                     <p:commandButton id="commandButtonShare" update="documents" ajax="true" action="#{mainController.shareDocument}" />
                 </h:panelGroup>
 
@@ -121,7 +122,9 @@
             </h:form>
         </h:panelGroup>
 
-        <h:panelGroup id="share" layout="block" styleClass="panel panel-default">
+        <!-- Share panel -->
+        <h:panelGroup id="share" layout="block" styleClass="panel panel-default modalPanel">
+            <button type="button" class="close closeDialog">&times;</button>
             <h:panelGroup layout="block" styleClass="panel-body">
                 <h:form>
                     <h:panelGroup layout="block" styleClass="form-group">

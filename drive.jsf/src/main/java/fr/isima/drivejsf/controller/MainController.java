@@ -36,13 +36,14 @@ public class MainController implements Serializable {
 
     @EJB
     private DocumentServiceEJB documentService;
-    /*@EJB
+
+    @EJB
     private UserServiceEJB userService;
-*/
+
     @PostConstruct
     private void postConstruct() {
         rootDocuments = documentService.getList(currentUserId, null);
-       // users = userService.getLoginList();
+        users = userService.getLoginList();
     }
 
     private void setFileStreamedContent(Document document) {
@@ -169,7 +170,7 @@ public class MainController implements Serializable {
     }
 
     public void shareDocument () {
-        System.out.println( "share doc : " + shareUser + " " + selectedDocument );
+        System.out.println("share doc : " + shareUser + " " + selectedDocument);
     }
 
     public void setUsers(List<String> users) {
