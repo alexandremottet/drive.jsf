@@ -63,7 +63,7 @@
             <!-- Upload file action -->
             <h:form id="uploadForm" enctype="multipart/form-data" styleClass="hiddenAction">
                 <p:fileUpload id="fileUploadComponent"  value="#{mainController.file}" mode="simple"/>
-                <p:commandButton id="fileUploadComponentButton" value="Submit" ajax="false" actionListener="#{mainController.handleFileUpload}"/>
+                <p:commandButton id="fileUploadComponentButton" update="documents" value="Submit" ajax="false" actionListener="#{mainController.handleFileUpload}"/>
             </h:form>
 
             <h:form id="tableForm">

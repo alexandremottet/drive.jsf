@@ -22,8 +22,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Data.findAll", query = "SELECT d FROM Data d"),
     @NamedQuery(name = "Data.findById", query = "SELECT d FROM Data d WHERE d.id = :id"),
-    @NamedQuery(name = "Data.findByHash", query = "SELECT d FROM Data d WHERE d.hash = :hash"),
-    @NamedQuery(name = "Data.findByCounter", query = "SELECT d FROM Data d WHERE d.counter = :counter")})
+    @NamedQuery(name = "Data.findByHash", query = "SELECT d FROM Data d WHERE d.hash = :hash")})
+
 public class Data implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,9 +39,6 @@ public class Data implements Serializable {
     @Lob
     @Column(name = "data")
     private byte[] data;
-
-    @Column(name = "counter")
-    private Integer counter;
 
     @OneToMany(mappedBy = "dataid")
     private List<Document> documentList;
@@ -75,14 +72,6 @@ public class Data implements Serializable {
 
     public void setData(byte[] data) {
         this.data = data;
-    }
-
-    public Integer getCounter() {
-        return counter;
-    }
-
-    public void setCounter(Integer counter) {
-        this.counter = counter;
     }
 
     public List<Document> getDocumentList() {

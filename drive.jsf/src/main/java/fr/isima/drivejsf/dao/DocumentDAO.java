@@ -1,6 +1,5 @@
 package fr.isima.drivejsf.dao;
 
-import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
 import fr.isima.drivejsf.exception.NoDataFoundException;
 import fr.isima.drivejsf.util.HibernateUtil;
@@ -77,7 +76,6 @@ public class DocumentDAO {
         session.close();
 
         return document;
-
     }
 
     public Document getDocumentForUri (int ownerId, String documentUri) {
@@ -133,4 +131,15 @@ public class DocumentDAO {
 
     }
 
+    public void saveDocument(Document document) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+
+        document = (Document) session.merge(document);
+        session.saveOrUpdate(document);
+
+        transaction.commit();
+        session.close();
+    }
 }

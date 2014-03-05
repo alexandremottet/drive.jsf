@@ -10,7 +10,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import fr.isima.drivejsf.ejb.ServiceEJB;
+import fr.isima.drivejsf.ejb.DocumentServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
 import org.primefaces.model.UploadedFile;
@@ -26,25 +26,16 @@ public class MainController implements Serializable {
     private List<Document> rootDocuments;
     private Document selectedDocument = null;
     private StreamedContent downloadableDocument = null;
-    private String currentUser = "1";
+    private String currentUserId = "1";
     private Document currentDocument = null;
     private UploadedFile file = null;
 
     @EJB
-	private ServiceEJB service;
-
-	public void testDAO() {
-        //System.out.println("isRoot : " + service.isRoot ("1"));
-        //System.out.println("isFolder : " + service.isFolder ("1"));
-        //System.out.println("getList : " + service.getList ("1", null));
-        //System.out.println("getList : " + service.getList ("1", "1"));
-        //System.out.println("getDocument : " + service.getDocument ("1"));
-        //System.out.println("getDocumentForUri : " + service.getDocumentForUri ("2", "aleanar_folder"));
-    }
+	private DocumentServiceEJB documentService;
 
     @PostConstruct
     private void postConstruct() {
-        rootDocuments = service.getList(currentUser, null);
+        rootDocuments = documentService.getList(currentUserId, null);
     }
 
     private void setFileStreamedContent(Document document) {
@@ -57,10 +48,10 @@ public class MainController implements Serializable {
     }
 
     private void zipFolder (Document folder, ZipOutputStream zos, String root) throws IOException {
-        List<Document> children = service.getList(currentUser, folder.getId().toString());
+        List<Document> children = documentService.getList(currentUserId, folder.getId().toString());
 
         for (Document child : children) {
-            if (service.isFolder(child.getId().toString())) {
+            if (documentService.isFolder(child.getId().toString())) {
                 zipFolder(child, zos, root + "/" + child.getName());
             } else {
                 ZipEntry entry = new ZipEntry(root + "/" + child.getName());
@@ -91,6 +82,16 @@ public class MainController implements Serializable {
 
     }
 
+    private void updateRootDocuments() {
+        Document current = currentDocument;
+
+        if (current != null) {
+            rootDocuments = documentService.getList(currentUserId, current.getId().toString());
+        } else {
+            rootDocuments = documentService.getList(currentUserId, null);
+        }
+    }
+
     public UploadedFile getFile() {
         return file;
     }
@@ -119,7 +120,7 @@ public class MainController implements Serializable {
         Document current = selectedDocument;
 
         if (current != null) {
-            if (service.isFolder(current.getId().toString())) {
+            if (documentService.isFolder(current.getId().toString())) {
                 setFolderStreamContent(current);
             } else {
                 setFileStreamedContent(current);
@@ -132,56 +133,43 @@ public class MainController implements Serializable {
         return downloadableDocument;
     }
 
-    public void setDownloadableDocument (StreamedContent downloadableDocument) {
+    public void setDownloadableDocument(StreamedContent downloadableDocument) {
         this.downloadableDocument = downloadableDocument;
     }
 
     public void onDocumentDblClck() {
-        Document current = selectedDocument;
-        List<Document> tmp;
+        if (selectedDocument != null) {
+            currentDocument = selectedDocument;
 
-        if (current != null) {
-            tmp = service.getList (currentUser, current.getId().toString());
-
-            if (tmp != null) {
-                rootDocuments = tmp;
-                currentDocument = current;
-            }
+            updateRootDocuments();
         }
     }
 
-    public void onReturnToParent () {
-        List<Document> tmp;
-        Document parent;
-        String parentId = null;
+    public void onReturnToParent() {
 
         if (rootDocuments != null && currentDocument != null) {
-            parent = currentDocument.getParentid();
+            currentDocument = currentDocument.getParentid();
 
-            if (parent != null) {
-                parentId = parent.getId().toString();
-            }
-
-            tmp = service.getList (currentUser, parentId);
-
-            if (tmp != null) {
-                rootDocuments = tmp;
-                currentDocument = parent;
-            }
+            updateRootDocuments();
         }
     }
 
-    public void onDeleteDocument () {
+    public void onDeleteDocument() {
         Document current = selectedDocument;
 
         if (current != null) {
-            service.deleteDocument (current.getId().toString());
+            documentService.deleteDocument(current.getId().toString());
 
-            rootDocuments = service.getList(currentUser, null);
+            updateRootDocuments();
         }
     }
 
     public void handleFileUpload() {
-        System.out.println(file.getFileName());
+        if (file != null) {
+            documentService.addDocument(file, currentDocument, currentUserId);
+            updateRootDocuments();
+
+            file = null;
+        }
     }
 }
