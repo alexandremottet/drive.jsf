@@ -11,12 +11,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import fr.isima.drivejsf.ejb.DocumentServiceEJB;
-import fr.isima.drivejsf.ejb.UserServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
-import fr.isima.drivejsf.entity.User;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -31,18 +29,13 @@ public class MainController implements Serializable {
     private StreamedContent downloadableDocument = null;
     private String currentUserId = "1";
     private Document currentDocument = null;
-    private List<String> users;
-    private String shareUser;
 
     @EJB
-    private DocumentServiceEJB documentService;
-    /*@EJB
-    private UserServiceEJB userService;
-*/
+	private DocumentServiceEJB documentService;
+
     @PostConstruct
     private void postConstruct() {
         rootDocuments = documentService.getList(currentUserId, null);
-       // users = userService.getLoginList();
     }
 
     private void setFileStreamedContent(Document document) {
@@ -166,26 +159,6 @@ public class MainController implements Serializable {
     public void handleFileUpload(FileUploadEvent event) {
         documentService.addDocument(event.getFile(), currentDocument, currentUserId);
         updateRootDocuments();
-    }
-
-    public void shareDocument () {
-        System.out.println( "share doc : " + shareUser + " " + selectedDocument );
-    }
-
-    public void setUsers(List<String> users) {
-        this.users = users;
-    }
-
-    public List<String> getUsers () {
-        return users;
-    }
-
-    public void setShareUser(String shareUser) {
-        this.shareUser = shareUser;
-    }
-
-    public String getShareUser () {
-        return shareUser;
     }
 
 }

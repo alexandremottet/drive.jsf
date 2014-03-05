@@ -38,12 +38,3 @@
 .hiddenAction {
     display: none;
 }
-
-#share {
-    display: none;
-    position: absolute;
-    width: 400px;
-    height: 100px;
-    top: calc(50% - 50px);
-    left: calc(50% - 200px);
-}
