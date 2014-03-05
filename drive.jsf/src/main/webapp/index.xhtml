@@ -60,13 +60,7 @@
                 </h:panelGroup>
             </h:panelGroup>
 
-            <!-- Upload file action -->
-            <h:form id="uploadForm" enctype="multipart/form-data" styleClass="hiddenAction">
-                <p:fileUpload id="fileUploadComponent"  value="#{mainController.file}" mode="simple"/>
-                <p:commandButton id="fileUploadComponentButton" update="documents" value="Submit" ajax="false" actionListener="#{mainController.handleFileUpload}"/>
-            </h:form>
-
-            <h:form id="tableForm">
+            <h:form id="tableForm" enctype="multipart/form-data">
                 <!-- Hidden actions triggered with JavaScript -->
                 <h:panelGroup styleClass="hiddenAction">
                     <!-- Download action -->
@@ -79,6 +73,9 @@
 
                     <!-- Delete action -->
                     <p:commandButton id="commandButtonDelete" update="documents" ajax="true" action="#{mainController.onDeleteDocument}" />
+
+                    <!-- Upload file action -->
+                    <p:fileUpload id="fileUploadComponent" update="documents" fileUploadListener="#{mainController.handleFileUpload}" mode="advanced" multiple="true" />
                 </h:panelGroup>
 
                 <!-- Data table context menu -->

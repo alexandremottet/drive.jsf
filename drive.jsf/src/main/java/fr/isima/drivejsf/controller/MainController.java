@@ -13,6 +13,7 @@ import javax.faces.bean.SessionScoped;
 import fr.isima.drivejsf.ejb.DocumentServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -28,7 +29,6 @@ public class MainController implements Serializable {
     private StreamedContent downloadableDocument = null;
     private String currentUserId = "1";
     private Document currentDocument = null;
-    private UploadedFile file = null;
 
     @EJB
 	private DocumentServiceEJB documentService;
@@ -90,14 +90,6 @@ public class MainController implements Serializable {
         } else {
             rootDocuments = documentService.getList(currentUserId, null);
         }
-    }
-
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    public void setFile(UploadedFile file) {
-        this.file = file;
     }
 
     public List<Document> getRootDocuments() {
@@ -164,12 +156,10 @@ public class MainController implements Serializable {
         }
     }
 
-    public void handleFileUpload() {
-        if (file != null) {
-            documentService.addDocument(file, currentDocument, currentUserId);
-            updateRootDocuments();
-
-            file = null;
-        }
+    public void handleFileUpload(FileUploadEvent event) {
+        System.out.println("TEST");
+        documentService.addDocument(event.getFile(), currentDocument, currentUserId);
+        updateRootDocuments();
     }
+
 }

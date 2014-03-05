@@ -11,9 +11,12 @@ $("#deleteButton").click(function() {
 });
 
 $("#uploadFileButton").click(function() {
-    $("#uploadForm\\:fileUploadComponent").trigger( "click" );
+    $("#tableForm\\:fileUploadComponent_input").trigger( "click" );
 });
 
-$("#uploadForm\\:fileUploadComponent").on('change', function() {
-    $("#uploadForm\\:fileUploadComponentButton").trigger( "click" );
+$("#tableForm\\:fileUploadComponent_input").on('change', function() {
+    setTimeout(function (){
+        $("#tableForm\\:fileUploadComponent .start").first().trigger( "click" );
+    }, 250);
+
 });
