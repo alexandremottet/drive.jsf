@@ -164,7 +164,6 @@ public class MainController implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        System.out.println("TEST");
         documentService.addDocument(event.getFile(), currentDocument, currentUserId);
         updateRootDocuments();
     }
