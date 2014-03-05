@@ -20,3 +20,13 @@ $("#tableForm\\:fileUploadComponent_input").on('change', function() {
     }, 250);
 
 });
+
+$("#shareButton").click(function () {
+    $("#share").show();
+});
+$("#tableForm\\:shareItem").click(function () {
+    $("#share").show();
+});
+$("#validShare").click(function () {
+    $(document.getElementById('tableForm:commandButtonShare')).trigger( "click" );
+});
