@@ -76,6 +76,8 @@
 
                     <!-- Upload file action -->
                     <p:fileUpload id="fileUploadComponent" update="documents" fileUploadListener="#{mainController.handleFileUpload}" mode="advanced" multiple="true" />
+
+                    <p:commandButton id="commandButtonShare" update="documents" ajax="true" action="#{mainController.shareDocument}" />
                 </h:panelGroup>
 
                 <!-- Data table context menu -->
@@ -83,7 +85,7 @@
                     <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
                         <p:fileDownload value="#{mainController.downloadableDocument}" />
                     </p:menuitem>
-                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" ajax="true" action="#{mainController.shareDocument}"/>
+                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" id="shareItem"/>
                     <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" ajax="true" action="#{mainController.onDeleteDocument}"/>
                 </p:contextMenu>
 
@@ -118,6 +120,27 @@
                 </h:panelGroup>
             </h:form>
         </h:panelGroup>
+
+        <h:panelGroup id="share" layout="block" styleClass="panel panel-default">
+            <h:panelGroup layout="block" styleClass="panel-body">
+                <h:form>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="share-user" styleClass="col-sm-2 control-label" value="Select user" />
+                        <h:panelGroup layout="block" styleClass="col-sm-4">
+                            <p:selectOneMenu id="share-user" value="#{mainController.shareUser}">
+                                <f:selectItems value="#{mainController.users}" var="user" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:panelGroup layout="block" styleClass="col-sm-offset-2 col-sm-4">
+                            <button id="validShare">Share</button>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+
 	</ui:define>
     <ui:define name="script">
         <h:outputScript name="js/index.js"/>
