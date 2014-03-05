@@ -76,9 +76,6 @@
 
                     <!-- Upload file action -->
                     <p:fileUpload id="fileUploadComponent" update="documents" fileUploadListener="#{mainController.handleFileUpload}" mode="advanced" multiple="true" />
-
-                    <!-- Share document action -->
-                    <p:commandButton id="commandButtonShare" update="documents" ajax="true" action="#{mainController.shareDocument}" />
                 </h:panelGroup>
 
                 <!-- Data table context menu -->
@@ -122,6 +119,23 @@
             </h:form>
         </h:panelGroup>
 
+        <!-- AddFolder panel -->
+        <h:panelGroup id="addFolderPanel" layout="block" styleClass="panel panel-default modalPanel">
+            <button type="button" class="close closeDialog">&times;</button>
+            <h:panelGroup layout="block" styleClass="panel-body">
+                <h:form id="addFolderForm">
+                    <h:outputLabel for="folderName" value="Folder : " />
+                    <p:inputText id="folderName" value="#{mainController.folderName}" required="true"  label="folderName"/>
+                    <p:watermark for="folderName" value="Name ..." />
+
+                    <p:commandButton value="Add" update=":tableForm:documents" ajax="true"
+                                     actionListener="#{mainController.onAddFolder}" type="Submit"
+                                     styleClass="btn btn-primary btn-xs"
+                                     oncomplete="unblockUI(); fadeOutAllModals();"/>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+
         <!-- Share panel -->
         <h:panelGroup id="share" layout="block" styleClass="panel panel-default modalPanel">
             <button type="button" class="close closeDialog">&times;</button>
@@ -137,14 +151,17 @@
                     </h:panelGroup>
                     <h:panelGroup layout="block" styleClass="form-group">
                         <h:panelGroup layout="block" styleClass="col-sm-offset-2 col-sm-4">
-                            <button id="validShare">Share</button>
+                            <p:commandButton value="Share" update=":tableForm:documents" ajax="true"
+                                             actionListener="#{mainController.shareDocument}" type="Submit"
+                                             styleClass="btn btn-primary btn-xs"
+                                             oncomplete="unblockUI(); fadeOutAllModals();"/>
                         </h:panelGroup>
                     </h:panelGroup>
                 </h:form>
             </h:panelGroup>
         </h:panelGroup>
-
 	</ui:define>
+
     <ui:define name="script">
         <h:outputScript name="js/index.js"/>
     </ui:define>

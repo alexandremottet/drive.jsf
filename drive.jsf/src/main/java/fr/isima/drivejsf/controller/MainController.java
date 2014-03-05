@@ -33,6 +33,7 @@ public class MainController implements Serializable {
     private Document currentDocument = null;
     private List<String> users;
     private String shareUser;
+    private String folderName = "";
 
     @EJB
     private DocumentServiceEJB documentService;
@@ -116,6 +117,14 @@ public class MainController implements Serializable {
         this.selectedDocument = selectedDocument;
     }
 
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+
     public StreamedContent getDownloadableDocument() {
         Document current = selectedDocument;
 
@@ -189,4 +198,9 @@ public class MainController implements Serializable {
         return shareUser;
     }
 
+    public void onAddFolder() {
+        documentService.addFolder(folderName, currentDocument, currentUserId);
+
+        updateRootDocuments();
+    }
 }

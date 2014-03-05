@@ -72,4 +72,22 @@ public class DocumentServiceEJB {
 
         new DocumentDAO().saveDocument(document);
     }
+
+    public void addFolder(String folderName, Document current, String userId) {
+        Document document = new Document();
+
+        document.setParentid(current);
+        document.setName(folderName);
+        document.setOwnerid(userService.getUser(userId));
+
+        if (current == null)
+            document.setUri(folderName);
+        else
+            document.setUri(current.getUri() + "/" + folderName);
+
+        // Manage data
+        document.setDataid(null);
+
+        new DocumentDAO().saveDocument(document);
+    }
 }

@@ -5,12 +5,12 @@ function fadeOutAllModals() {
 }
 
 function blockUI() {
-    $('#container').fadeTo('slow', .5);
     $('#container').append('<div id="blockUIFrame"></div>');
+    $('#container').fadeTo(400, .5);
 }
 
 function unblockUI() {
-    $('#container').fadeTo('slow', 1);
+    $('#container').fadeTo(400, 1);
     $('#blockUIFrame').remove();
 }
 
@@ -59,4 +59,10 @@ $("#addFolderButton").click(function () {
 $(".closeDialog").click(function () {
     unblockUI();
     fadeOutAllModals();
+});
+
+$("#addFolderButton").click(function () {
+    blockUI();
+    fadeOutAllModals();
+    $("#addFolderPanel").fadeIn();
 });
