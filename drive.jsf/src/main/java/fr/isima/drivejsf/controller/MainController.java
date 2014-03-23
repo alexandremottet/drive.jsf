@@ -34,6 +34,7 @@ public class MainController implements Serializable {
     private List<String> users;
     private String shareUser;
     private String folderName = "";
+    private String currentPath = "";
 
     @EJB
     private DocumentServiceEJB documentService;
@@ -96,8 +97,10 @@ public class MainController implements Serializable {
 
         if (current != null) {
             rootDocuments = documentService.getList(currentUserId, current.getId().toString());
+            currentPath = current.getUri();
         } else {
             rootDocuments = documentService.getList(currentUserId, null);
+            currentPath = "";
         }
     }
 
@@ -123,6 +126,14 @@ public class MainController implements Serializable {
 
     public void setFolderName(String folderName) {
         this.folderName = folderName;
+    }
+
+    public String getCurrentPath() {
+        return currentPath;
+    }
+
+    public void setCurrentPath(String currentPath) {
+        this.currentPath = currentPath;
     }
 
     public StreamedContent getDownloadableDocument() {
@@ -155,7 +166,6 @@ public class MainController implements Serializable {
     }
 
     public void onReturnToParent() {
-
         if (rootDocuments != null && currentDocument != null) {
             currentDocument = currentDocument.getParentid();
 

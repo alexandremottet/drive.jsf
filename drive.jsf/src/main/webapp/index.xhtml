@@ -69,7 +69,7 @@
                     </p:commandButton>
 
                     <!-- Return action -->
-                    <p:commandButton id="commandButtonBack" update="documents" ajax="true" action="#{mainController.onReturnToParent}" />
+                    <p:commandButton id="commandButtonBack" update="documents, currentPath" ajax="true" action="#{mainController.onReturnToParent}" oncomplete="changeUrl();"/>
 
                     <!-- Delete action -->
                     <p:commandButton id="commandButtonDelete" update="documents" ajax="true" action="#{mainController.onDeleteDocument}" />
@@ -89,14 +89,14 @@
 
                 <!-- Data table -->
                 <h:panelGroup class="panel panel-default" layout="block">
-                    <h:panelGroup class="panel-heading"  layout="block">Documents</h:panelGroup>
+                    <h:panelGroup class="panel-heading"  layout="block">Documents : <h:outputLabel id="currentPath" value="#{mainController.currentPath}"/></h:panelGroup>
 
                     <p:dataTable id="documents" var="document" value="#{mainController.rootDocuments}"
                                  rowKey="#{document.name}" stickyHeader="true"
-                                 selection="#{mainController.selectedDocument}" selectionMode="single">
+                                 selection="#{mainController.selectedDocument}" selectionMode="single" >
 
                         <p:ajax event="rowDblselect" listener="#{mainController.onDocumentDblClck}"
-                                update="documents" />
+                                update="documents, :tableForm:currentPath" oncomplete="changeUrl();"/>
 
                         <p:column headerText="Name">
                             #{document.name}
