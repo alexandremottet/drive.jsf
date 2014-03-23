@@ -14,6 +14,11 @@ function unblockUI() {
     $('#blockUIFrame').remove();
 }
 
+function changeUrl() {
+
+    window.history.pushState("", "Drive JSF Update URI", "/" + $("#tableForm\\:currentPath").html());
+}
+
 $("#downloadButton").click(function() {
     $("#tableForm\\:commandButtonDownload").trigger( "click" );
 });
