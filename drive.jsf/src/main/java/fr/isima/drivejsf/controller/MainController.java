@@ -36,6 +36,7 @@ public class MainController implements Serializable {
     private String shareUser;
     private String folderName = "";
     private String currentPath = "";
+    private String searchInput = "";
 
     @EJB
     private DocumentServiceEJB documentService;
@@ -140,6 +141,14 @@ public class MainController implements Serializable {
         this.currentPath = currentPath;
     }
 
+    public String getSearchInput() {
+        return searchInput;
+    }
+
+    public void setSearchInput(String searchInput) {
+        this.searchInput = searchInput;
+    }
+
     public StreamedContent getDownloadableDocument() {
         Document current = selectedDocument;
 
@@ -221,5 +230,11 @@ public class MainController implements Serializable {
         documentService.addFolder(folderName, currentDocument, currentUserId);
 
         updateRootDocuments();
+    }
+
+    public void onSearch() {
+        currentPath = "Search results";
+        currentDocument = null;
+        rootDocuments = documentService.searchDocuments(searchInput, currentUserId);
     }
 }

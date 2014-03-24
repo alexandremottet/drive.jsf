@@ -37,13 +37,16 @@
                     </h:panelGroup>
 
                     <!-- Search form -->
-                    <h:form styleClass="searchForm pull-right">
+                    <h:form id="searchForm" styleClass="searchForm pull-right">
                         <h:panelGroup styleClass="input-group" layout="block">
-                            <p:inputText id="searchInput" styleClass="form-control" label="searchInput" required="true"/>
+                            <p:inputText id="searchInput" styleClass="form-control" value="#{mainController.searchInput}" label="searchInput" required="true"/>
                             <p:watermark for="searchInput" value="Search ..." />
                             <h:panelGroup styleClass="input-group-btn" layout="inline">
-                                <button type="submit" class="btn btn-default searchBtn"><h:panelGroup class="glyphicon glyphicon-search" layout="inline" /></button>
+                                <button id="searchButton" class="btn btn-default searchBtn"><h:panelGroup class="glyphicon glyphicon-search" layout="inline" /></button>
                             </h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="hiddenAction">
+                            <p:commandButton value="Submit" id="commandSearchButton" update=":tableForm:documents, :tableForm:currentPath" ajax="true" actionListener="#{mainController.onSearch}" />
                         </h:panelGroup>
                     </h:form>
 

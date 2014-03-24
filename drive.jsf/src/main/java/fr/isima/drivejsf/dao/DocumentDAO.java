@@ -99,7 +99,6 @@ public class DocumentDAO {
     }
 
     public List<Document> getDocumentRoot (int ownerId) {
-
         Session session = HibernateUtil.getSession();
 
         // Folder
@@ -111,16 +110,13 @@ public class DocumentDAO {
             throw new NoDataFoundException();
         }
 
-        session.clear();
         session.close();
 
         // Documents
         return documents;
-
     }
 
     public List<Document> getFolderList(int parentId) {
-
         Document document = getDocument(parentId);
 
         if (!isFolder(document)) {
@@ -141,5 +137,25 @@ public class DocumentDAO {
 
         transaction.commit();
         session.close();
+    }
+
+    public List<Document> searchDocuments(String searchInput, int userId) {
+        Session session = HibernateUtil.getSession();
+
+        // Folder
+        Query query = session.getNamedQuery("Document.findDocumentsLike");
+        query.setString("searchInput", "%" + searchInput + "%");
+        query.setInteger("userId", userId);
+
+        List<Document> documents = (List<Document>) query.list();
+
+        if (documents == null) {
+            throw new NoDataFoundException();
+        }
+
+        session.close();
+
+        // Documents
+        return documents;
     }
 }

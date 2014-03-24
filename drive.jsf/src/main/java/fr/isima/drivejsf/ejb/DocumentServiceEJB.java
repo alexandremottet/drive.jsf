@@ -90,4 +90,8 @@ public class DocumentServiceEJB {
 
         new DocumentDAO().saveDocument(document);
     }
+
+    public List<Document> searchDocuments(String searchInput, String currentUserId) {
+        return new DocumentDAO().searchDocuments(searchInput, Integer.parseInt(currentUserId));
+    }
 }

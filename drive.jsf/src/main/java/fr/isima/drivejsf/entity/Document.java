@@ -27,7 +27,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Document.findRootByOwner", query = "SELECT d FROM Document d WHERE d.ownerid = :ownerId AND d.parentid = NULL"),
     @NamedQuery(name = "Document.findFolderContent", query = "SELECT d FROM Document d WHERE d.parentid = :parentId"),
     @NamedQuery(name = "Document.findByUri", query = "SELECT d FROM Document d WHERE d.ownerid = :ownerId AND d.uri = :uri"),
-    @NamedQuery(name = "Document.countFolderContent", query = "SELECT COUNT(d) FROM Document d WHERE d.parentid = :parentId")
+    @NamedQuery(name = "Document.countFolderContent", query = "SELECT COUNT(d) FROM Document d WHERE d.parentid = :parentId"),
+    @NamedQuery(name = "Document.findDocumentsLike", query = "SELECT d FROM Document d WHERE d.name like :searchInput AND d.ownerid = :userId")
 })
 public class Document implements Serializable {
 
