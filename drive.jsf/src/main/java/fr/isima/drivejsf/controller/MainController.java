@@ -15,6 +15,7 @@ import fr.isima.drivejsf.ejb.ShareServiceEJB;
 import fr.isima.drivejsf.ejb.UserServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
+import fr.isima.drivejsf.exception.NoDataFoundException;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import fr.isima.drivejsf.entity.User;
@@ -101,11 +102,16 @@ public class MainController implements Serializable {
         Document current = currentDocument;
 
         if (current != null) {
-            rootDocuments = documentService.getList(currentUserId, current.getId().toString());
-            currentPath = current.getUri();
+            try {
+                rootDocuments = documentService.getList(currentUserId, current.getId().toString());
+                currentPath = current.getUri();
+            } catch (NoDataFoundException noDataException) {
+                System.out.println("The document " + current.getName() + " is not a folder.");
+            }
         } else {
             rootDocuments = documentService.getList(currentUserId, null);
             currentPath = "";
+
         }
     }
 
@@ -172,9 +178,10 @@ public class MainController implements Serializable {
 
     public void onDocumentDblClck() {
         if (selectedDocument != null) {
-            currentDocument = selectedDocument;
-
-            updateRootDocuments();
+            if (documentService.isFolder(selectedDocument.getId().toString())) {
+                currentDocument = selectedDocument;
+                updateRootDocuments();
+            }
         }
     }
 
