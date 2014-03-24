@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import fr.isima.drivejsf.ejb.DocumentServiceEJB;
+import fr.isima.drivejsf.ejb.ShareServiceEJB;
 import fr.isima.drivejsf.ejb.UserServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
@@ -41,6 +42,9 @@ public class MainController implements Serializable {
 
     @EJB
     private UserServiceEJB userService;
+
+    @EJB
+    private ShareServiceEJB shareService;
 
     @PostConstruct
     private void postConstruct() {
@@ -165,6 +169,10 @@ public class MainController implements Serializable {
         }
     }
 
+    public void onDocumentSelect() {
+        
+    }
+
     public void onReturnToParent() {
         if (rootDocuments != null && currentDocument != null) {
             currentDocument = currentDocument.getParentid();
@@ -190,6 +198,7 @@ public class MainController implements Serializable {
 
     public void shareDocument () {
         System.out.println("share doc : " + shareUser + " " + selectedDocument);
+        shareService.shareDocument(shareUser, selectedDocument.getId());
     }
 
     public void setUsers(List<String> users) {

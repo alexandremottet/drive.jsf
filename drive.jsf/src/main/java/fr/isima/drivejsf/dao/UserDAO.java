@@ -27,6 +27,23 @@ public class UserDAO {
         return user;
     }
 
+    public User getUser (String login) {
+        Session session = HibernateUtil.getSession();
+
+        Query query = session.getNamedQuery("User.findByLogin");
+        query.setString("login", login);
+
+        User user = (User) query.uniqueResult();
+
+        if (user == null) {
+            throw new NoDataFoundException();
+        }
+
+        session.close();
+
+        return user;
+    }
+
     public List<String> getList() {
         Session session = HibernateUtil.getSession();
 

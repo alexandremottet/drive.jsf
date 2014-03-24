@@ -19,6 +19,10 @@ public class UserServiceEJB {
         return new UserDAO().getUser(Integer.parseInt(userId));
     }
 
+    public User getUserWithLogin (String login) {
+        return new UserDAO().getUser(login);
+    }
+
     public List<String> getLoginList() {
         return new UserDAO().getList();
     }

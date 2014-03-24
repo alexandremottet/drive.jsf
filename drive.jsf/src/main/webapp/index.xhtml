@@ -28,7 +28,6 @@
                         <button id="downloadButton" type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
                         </button>
-
                         <button id="shareButton" type="button" class="btn btn-default">
                             <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-share" layout="inline"></h:panelGroup>
                         </button>
@@ -97,6 +96,8 @@
 
                         <p:ajax event="rowDblselect" listener="#{mainController.onDocumentDblClck}"
                                 update="documents, :tableForm:currentPath" oncomplete="changeUrl();"/>
+
+                        <p:ajax event="rowSelect" listener="#{mainController.onDocumentSelect}" />
 
                         <p:column headerText="Name">
                             #{document.name}

@@ -46,8 +46,8 @@ public class DocumentServiceEJB {
 
     }
 
-    public Document getDocument (String documentId) {
-        return new DocumentDAO().getDocument(Integer.parseInt(documentId));
+    public Document getDocument (int documentId) {
+        return new DocumentDAO().getDocument(documentId);
     }
 
     public Document getDocumentForUri (String ownerId, String documentUri) {
