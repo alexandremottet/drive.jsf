@@ -27,13 +27,13 @@
         <!-- Navigation bar -->
         <h:panelGroup id="navBarHeader" layout="block" styleClass="navbar navbar-default navbar-fixed-top" role="navigation">
             <h:panelGroup styleClass="navbar-header" layout="block">
-                <h:link styleClass="navbar-brand" href="#"><h:panelGroup styleClass="glyphicon glyphicon-cloud-download navIcon" layout="inline"/>Drive.jsf</h:link>
+                <a class="navbar-brand" href="/"><h:panelGroup styleClass="glyphicon glyphicon-cloud-download navIcon" layout="inline"/>Drive.jsf</a>
             </h:panelGroup>
 
             <h:panelGroup styleClass="collapse navbar-collapse" layout="block">
                 <ul class="nav navbar-nav">
-                    <li class="active"><h:link href="#">Home</h:link></li>
-                    <li><h:link href="#">Shared</h:link></li>
+                    <li id="navHome" class="active"><a href="/">Home</a></li>
+                    <li id="navShared"><a href="#">Shared</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
