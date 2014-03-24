@@ -27,7 +27,9 @@ import javax.persistence.Table;
 @Table(name = "share")
 @NamedQueries({
     @NamedQuery(name = "Share.findAll", query = "SELECT s FROM Share s"),
-    @NamedQuery(name = "Share.findByIdshare", query = "SELECT s FROM Share s WHERE s.idshare = :idshare")})
+    @NamedQuery(name = "Share.findByIdshare", query = "SELECT s FROM Share s WHERE s.idshare = :idshare"),
+    @NamedQuery(name = "Share.findByDocIdAndUserId", query = "SELECT s FROM Share s WHERE s.docid = :docid AND s.userid = :userid")
+})
 public class Share implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

@@ -170,7 +170,7 @@ public class MainController implements Serializable {
     }
 
     public void onDocumentSelect() {
-        
+
     }
 
     public void onReturnToParent() {
