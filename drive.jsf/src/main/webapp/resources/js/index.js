@@ -98,3 +98,9 @@ $("#addFolderButton").click(function () {
     fadeOutAllModals();
     $("#addFolderPanel").fadeIn();
 });
+
+$("#searchForm").submit(function(e) {
+    $("#searchForm\\:commandSearchButton").trigger( "click" );
+
+    e.preventDefault();
+});

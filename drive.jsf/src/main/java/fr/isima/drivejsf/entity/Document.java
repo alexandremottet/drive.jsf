@@ -6,7 +6,10 @@
 
 package fr.isima.drivejsf.entity;
 
+import org.hibernate.Hibernate;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,7 +27,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Document.findRootByOwner", query = "SELECT d FROM Document d WHERE d.ownerid = :ownerId AND d.parentid = NULL"),
     @NamedQuery(name = "Document.findFolderContent", query = "SELECT d FROM Document d WHERE d.parentid = :parentId"),
     @NamedQuery(name = "Document.findByUri", query = "SELECT d FROM Document d WHERE d.ownerid = :ownerId AND d.uri = :uri"),
-    @NamedQuery(name = "Document.countFolderContent", query = "SELECT COUNT(d) FROM Document d WHERE d.parentid = :parentId")
+    @NamedQuery(name = "Document.countFolderContent", query = "SELECT COUNT(d) FROM Document d WHERE d.parentid = :parentId"),
+    @NamedQuery(name = "Document.findDocumentsLike", query = "SELECT d FROM Document d WHERE d.name like :searchInput AND d.ownerid = :userId")
 })
 public class Document implements Serializable {
 
@@ -60,7 +64,7 @@ public class Document implements Serializable {
     @ManyToOne
     private Data dataid;
 
-    @OneToMany(mappedBy = "docid")
+    @OneToMany(mappedBy = "docid", fetch = FetchType.LAZY)
     private List<Share> shareList;
 
     public Document() {
@@ -68,6 +72,18 @@ public class Document implements Serializable {
 
     public Document(Integer id) {
         this.id = id;
+    }
+
+    public String getTypeAsString() {
+        StringBuffer type = new StringBuffer();
+
+        if (dataid == null) {
+            type.append("Folder");
+        } else {
+            type.append("File");
+        }
+
+        return type.toString();
     }
 
     public Integer getId() {

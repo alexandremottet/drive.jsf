@@ -4,6 +4,7 @@ import fr.isima.drivejsf.dao.DocumentDAO;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
 import fr.isima.drivejsf.entity.Share;
+import fr.isima.drivejsf.exception.NoDataFoundException;
 import org.primefaces.model.UploadedFile;
 
 import javax.ejb.EJB;
@@ -42,7 +43,7 @@ public class DocumentServiceEJB {
         new DocumentDAO().deleteDocument(Integer.parseInt(documentId));
     }
 
-    public List<Document> getList (String ownerId, String documentId) {
+    public List<Document> getList (String ownerId, String documentId) throws NoDataFoundException {
 
         if (documentId == null)
             return new DocumentDAO().getDocumentRoot(Integer.parseInt(ownerId));
@@ -122,5 +123,9 @@ public class DocumentServiceEJB {
         document.setDataid(null);
 
         new DocumentDAO().saveDocument(document);
+    }
+
+    public List<Document> searchDocuments(String searchInput, String currentUserId) {
+        return new DocumentDAO().searchDocuments(searchInput, Integer.parseInt(currentUserId));
     }
 }
