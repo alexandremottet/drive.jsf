@@ -95,7 +95,6 @@ public class MainController implements Serializable {
         stream = new ByteArrayInputStream(baos.toByteArray());
 
         downloadableDocument = new DefaultStreamedContent(stream, "text/plain", folder.getName() + ".zip");
-
     }
 
     private void updateRootDocuments() {
@@ -243,5 +242,16 @@ public class MainController implements Serializable {
         currentPath = "Search results";
         currentDocument = null;
         rootDocuments = documentService.searchDocuments(searchInput, currentUserId);
+    }
+
+    public void onReset() {
+        selectedDocument = null;
+        downloadableDocument = null;
+        currentDocument = null;
+        folderName = "";
+        currentPath = "";
+        searchInput = "";
+
+        postConstruct();
     }
 }

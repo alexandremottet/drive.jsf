@@ -16,6 +16,7 @@
 
         <script src="/resources/js/jsf.js" type="application/javascript" />
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="application/javascript" />
+        <h:outputScript name="js/layout.js"/>
 
         <link type="text/css" rel="stylesheet" href="/resources/css/layout.css" />
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
@@ -27,12 +28,12 @@
         <!-- Navigation bar -->
         <h:panelGroup id="navBarHeader" layout="block" styleClass="navbar navbar-default navbar-fixed-top" role="navigation">
             <h:panelGroup styleClass="navbar-header" layout="block">
-                <a class="navbar-brand" href="/"><h:panelGroup styleClass="glyphicon glyphicon-cloud-download navIcon" layout="inline"/>Drive.jsf</a>
+                <a class="navbar-brand" href="/" onclick="resetTable();"><h:panelGroup styleClass="glyphicon glyphicon-cloud-download navIcon" layout="inline"/>Drive.jsf</a>
             </h:panelGroup>
 
             <h:panelGroup styleClass="collapse navbar-collapse" layout="block">
                 <ul class="nav navbar-nav">
-                    <li id="navHome" class="active"><a href="/">Home</a></li>
+                    <li id="navHome" class="active"><a href="/" onclick="resetTable();">Home</a></li>
                     <li id="navShared"><a href="#">Shared</a></li>
                 </ul>
 
@@ -41,6 +42,12 @@
                     <li></li>
                 </ul>
             </h:panelGroup>
+        </h:panelGroup>
+
+        <h:panelGroup styleClass="hiddenAction">
+            <h:form id="resetForm">
+                <p:commandButton id="commandResetButton" update=":tableForm:documents, :tableForm:currentPath" actionListener="#{mainController.onReset}" />
+            </h:form>
         </h:panelGroup>
 
 		<ui:insert name="body"></ui:insert>
