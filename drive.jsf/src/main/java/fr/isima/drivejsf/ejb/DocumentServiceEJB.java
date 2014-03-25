@@ -3,12 +3,14 @@ package fr.isima.drivejsf.ejb;
 import fr.isima.drivejsf.dao.DocumentDAO;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
+import fr.isima.drivejsf.entity.Share;
 import org.primefaces.model.UploadedFile;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -20,6 +22,9 @@ public class DocumentServiceEJB {
 
     @EJB
     private DataServiceEJB dataService;
+
+    @EJB
+    private ShareServiceEJB shareService;
 
     public DocumentServiceEJB() {
     	
@@ -43,6 +48,34 @@ public class DocumentServiceEJB {
             return new DocumentDAO().getDocumentRoot(Integer.parseInt(ownerId));
 
         return new DocumentDAO().getFolderList(Integer.parseInt(documentId));
+
+    }
+
+    public List<Document> getSharedWithMeList (String ownerId) {
+
+        List<Share> sharedElements = shareService.getSharedWithMe(Integer.parseInt(ownerId));
+        List<Document> documents = new ArrayList<Document>();
+
+        for (Share share : sharedElements)
+        {
+            documents.add(share.getDocid());
+        }
+
+        return documents;
+
+    }
+
+    public List<Share> getSharedList (String ownerId) {
+
+        List<Share> sharedElements = shareService.getShared(Integer.parseInt(ownerId));
+        List<Document> documents = new ArrayList<Document>();
+
+        /*for (Share share : sharedElements)
+        {
+            documents.add(share.getDocid());
+        }*/
+
+        return sharedElements;
 
     }
 

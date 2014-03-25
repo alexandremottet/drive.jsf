@@ -15,16 +15,43 @@ function unblockUI() {
 }
 
 function changeUrl() {
-
     window.history.pushState("", "Drive JSF Update URI", "/" + $("#tableForm\\:currentPath").html());
+}
+
+function changeUrlTM() {
+    window.history.pushState("", "Drive JSF Update URI", "/" + $("#tableFormTM\\:currentPathTM").html());
+}
+
+function changeUrlFM() {
+    window.history.pushState("", "Drive JSF Update URI", "/" + $("#tableFormFM\\:currentPathFM").html());
 }
 
 $("#downloadButton").click(function() {
     $("#tableForm\\:commandButtonDownload").trigger( "click" );
 });
 
+$("#downloadButtonTM").click(function() {
+    $("#tableFormTM\\:commandButtonDownloadTM").trigger( "click" );
+});
+
+$("#downloadButtonFM").click(function() {
+    $("#tableFormFM\\:commandButtonDownloadFM").trigger( "click" );
+});
+
 $("#backButton").click(function() {
     $("#tableForm\\:commandButtonBack").trigger( "click" );
+});
+
+$("#backButtonTM").click(function() {
+    $("#tableFormTM\\:commandButtonBackTM").trigger( "click" );
+});
+
+$("#backButtonFM").click(function() {
+    $("#tableFormFM\\:commandButtonBackFM").trigger( "click" );
+});
+
+$("#unshareButtonFM").click(function() {
+    $("#tableFormFM\\:commandButtonUnshareFM").trigger( "click" );
 });
 
 $("#deleteButton").click(function() {

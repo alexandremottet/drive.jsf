@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="template/layout.xhtml">
+
+    <ui:define name="header">
+        <h:outputStylesheet name="css/index.css"/>
+    </ui:define>
+	<ui:define name="body">
+        <h:panelGroup id="container" layout="block" styleClass="container">
+
+
+
+
+            <h:panelGroup styleClass="row" layout="block">
+                <h:panelGroup styleClass="col-md-12" layout="block">
+
+                    <!-- Return button -->
+                    <h:panelGroup class="btn-group pull-left backGroup" layout="block">
+                        <button id="backButtonTM" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-arrow-left" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+
+                    <!-- Left panel buttons (download, share, delete) -->
+                    <h:panelGroup class="btn-group pull-left itemActionGroup" layout="block">
+                        <button id="downloadButtonTM" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:form id="tableFormTM" enctype="multipart/form-data">
+                <!-- Hidden actions triggered with JavaScript -->
+                <h:panelGroup styleClass="hiddenAction">
+                    <!-- Download action -->
+                    <p:commandButton id="commandButtonDownloadTM" ajax="false">
+                        <p:fileDownload value="#{shareController.downloadableDocumentTM}" />
+                    </p:commandButton>
+                    <!-- Return action -->
+                    <p:commandButton id="commandButtonBackTM" update="documentsTM, currentPathTM" ajax="true" action="#{shareController.onReturnToParentTM}" oncomplete="changeUrlTM();"/>
+                </h:panelGroup>
+
+                <!-- Data table context menu -->
+                <p:contextMenu for="documentsTM">
+                    <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
+                        <p:fileDownload value="#{shareController.downloadableDocumentTM}" />
+                    </p:menuitem>
+                </p:contextMenu>
+
+                <!-- Data table -->
+                <h:panelGroup class="panel panel-default" layout="block">
+                    <h:panelGroup class="panel-heading"  layout="block">Documents that user shared with you : <h:outputLabel id="currentPathTM" value="#{shareController.currentPathTM}"/></h:panelGroup>
+
+                    <p:dataTable id="documentsTM" var="document" value="#{shareController.documentsTM}"
+                                 rowKey="#{document.name}" stickyHeader="true"
+                                 selection="#{shareController.selectedDocumentTM}" selectionMode="single" >
+
+                        <p:ajax event="rowDblselect" listener="#{shareController.onDocumentDblClckTM}"
+                                update="documentsTM, :tableFormTM:currentPathTM" oncomplete="changeUrlTM();"/>
+
+                        <p:ajax event="rowSelect" listener="#{shareController.onDocumentSelectTM}" />
+
+                        <p:column headerText="Name">
+                            #{document.name}
+                        </p:column>
+
+                        <p:column headerText="Type">
+                            <h:panelGroup rendered="#{document.dataid == null}">
+                                Folder
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{document.dataid != null}">
+                                File
+                            </h:panelGroup>
+                        </p:column>
+
+                        <p:column headerText="Size" >
+                            #{document.dataid.dataLenghtAsString}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+
+            </h:form>
+
+
+
+
+
+
+
+            <h:panelGroup styleClass="row" layout="block">
+                <h:panelGroup styleClass="col-md-12" layout="block">
+
+                    <!-- Return button -->
+                    <!--<h:panelGroup class="btn-group pull-left backGroup" layout="block">
+                        <button id="backButtonFM" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-arrow-left" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>-->
+
+                    <!-- Left panel buttons (download, share, delete) -->
+                    <h:panelGroup class="btn-group pull-left itemActionGroup" layout="block">
+                        <button id="downloadButtonFM" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
+                        </button>
+                        <button id="unshareButtonFM" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-trash" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:form id="tableFormFM" enctype="multipart/form-data">
+                <!-- Hidden actions triggered with JavaScript -->
+                <h:panelGroup styleClass="hiddenAction">
+                    <!-- Download action -->
+                    <p:commandButton id="commandButtonDownloadFM" ajax="false">
+                        <p:fileDownload value="#{shareController.downloadableDocumentFM}" />
+                    </p:commandButton>
+                    <!-- Unshare action -->
+                    <p:commandButton id="commandButtonUnshareFM" update="documentsFM, currentPathFM" ajax="false" action="#{shareController.undoShareFM}" />
+                </h:panelGroup>
+
+                <!-- Data table context menu -->
+                <p:contextMenu for="documentsFM">
+                    <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
+                        <p:fileDownload value="#{shareController.downloadableDocumentFM}" />
+                    </p:menuitem>
+                    <p:menuitem value="Undo Share" icon="ui-icon-close" ajax="false" actionListener="#{shareController.undoShareFM}" />
+                </p:contextMenu>
+
+                <!-- Data table -->
+                <h:panelGroup class="panel panel-default" layout="block">
+                    <h:panelGroup class="panel-heading"  layout="block">Documents that I share : <h:outputLabel id="currentPathFM" value="#{shareController.currentPathFM}"/></h:panelGroup>
+
+                    <p:dataTable id="documentsFM" var="document" value="#{shareController.documentsFM}"
+                                 rowKey="#{document.docid.name}" stickyHeader="true"
+                                 selection="#{shareController.selectedDocumentFM}" selectionMode="single" >
+
+                        <!--<p:ajax event="rowDblselect" listener="#{shareController.onDocumentDblClckFM}"
+                                update="documentsFM, :tableFormFM:currentPathFM" oncomplete="changeUrlFM();"/>-->
+
+                        <p:ajax event="rowSelect" listener="#{shareController.onDocumentSelectFM}" />
+
+                        <p:column headerText="Name">
+                            #{document.docid.name}
+                        </p:column>
+
+                        <p:column headerText="Type">
+                            <h:panelGroup rendered="#{document.docid.dataid == null}">
+                                Folder
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{document.docid.dataid != null}">
+                                File
+                            </h:panelGroup>
+                        </p:column>
+
+                        <p:column headerText="Size" >
+                            #{document.docid.dataid.dataLenghtAsString}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+
+            </h:form>
+
+
+
+
+
+
+
+        </h:panelGroup>
+	</ui:define>
+
+    <ui:define name="script">
+        <h:outputScript name="js/index.js"/>
+    </ui:define>
+</ui:composition>
+
