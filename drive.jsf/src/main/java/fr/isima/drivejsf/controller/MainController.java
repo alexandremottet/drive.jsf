@@ -239,9 +239,13 @@ public class MainController implements Serializable {
     }
 
     public void onSearch() {
-        currentPath = "Search results";
-        currentDocument = null;
-        rootDocuments = documentService.searchDocuments(searchInput, currentUserId);
+        if (!searchInput.isEmpty()) {
+            currentPath = "Search results";
+            currentDocument = null;
+            rootDocuments = documentService.searchDocuments(searchInput, currentUserId);
+        } else {
+            onReset();
+        }
     }
 
     public void onReset() {
