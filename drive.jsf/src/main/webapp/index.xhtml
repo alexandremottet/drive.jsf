@@ -159,6 +159,13 @@
                 </h:form>
             </h:panelGroup>
         </h:panelGroup>
+
+        <!-- Reset hidden section -->
+        <h:panelGroup styleClass="hiddenAction">
+            <h:form id="resetForm">
+                <p:commandButton id="commandResetButton" update=":tableForm:documents, :tableForm:currentPath" actionListener="#{mainController.onReset}" />
+            </h:form>
+        </h:panelGroup>
 	</ui:define>
 
     <ui:define name="script">

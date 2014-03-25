@@ -16,7 +16,7 @@
 
         <script src="/resources/js/jsf.js" type="application/javascript" />
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="application/javascript" />
-        <h:outputScript name="js/layout.js"/>
+        <script src="/resources/js/layout.js" type="application/javascript" />
 
         <link type="text/css" rel="stylesheet" href="/resources/css/layout.css" />
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
@@ -33,8 +33,9 @@
 
             <h:panelGroup styleClass="collapse navbar-collapse" layout="block">
                 <ul class="nav navbar-nav">
-                    <li id="navHome" class="active"><a href="/" onclick="resetTable();">Home</a></li>
-                    <li id="navShared"><a href="#">Shared</a></li>
+                    <li class="active"><h:link outcome="index" onclick="resetTable();">Home</h:link></li>
+                    <li><h:link outcome="shared">Shared</h:link></li>
+
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -42,12 +43,6 @@
                     <li></li>
                 </ul>
             </h:panelGroup>
-        </h:panelGroup>
-
-        <h:panelGroup styleClass="hiddenAction">
-            <h:form id="resetForm">
-                <p:commandButton id="commandResetButton" update=":tableForm:documents, :tableForm:currentPath" actionListener="#{mainController.onReset}" />
-            </h:form>
         </h:panelGroup>
 
 		<ui:insert name="body"></ui:insert>
