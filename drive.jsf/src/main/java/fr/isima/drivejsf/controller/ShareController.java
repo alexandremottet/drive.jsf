@@ -289,7 +289,6 @@ public class ShareController implements Serializable {
             updateTM();
             updateFM();
         }
-
     }
 
     public void onReset() {

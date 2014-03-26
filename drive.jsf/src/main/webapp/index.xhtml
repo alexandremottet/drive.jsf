@@ -139,23 +139,16 @@
         <h:panelGroup id="share" layout="block" styleClass="panel panel-default modalPanel">
             <button type="button" class="close closeDialog">&times;</button>
             <h:panelGroup layout="block" styleClass="panel-body">
-                <h:form>
-                    <h:panelGroup layout="block" styleClass="form-group">
-                        <h:outputLabel for="share-user" styleClass="col-sm-2 control-label" value="Select user" />
-                        <h:panelGroup layout="block" styleClass="col-sm-4">
-                            <p:selectOneMenu id="share-user" value="#{mainController.shareUser}">
-                                <f:selectItems value="#{mainController.users}" var="user" />
-                            </p:selectOneMenu>
-                        </h:panelGroup>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="form-group">
-                        <h:panelGroup layout="block" styleClass="col-sm-offset-2 col-sm-4">
-                            <p:commandButton value="Share" update=":tableForm:documents" ajax="true"
-                                             actionListener="#{mainController.shareDocument}" type="Submit"
-                                             styleClass="btn btn-primary btn-xs"
-                                             oncomplete="unblockUI(); fadeOutAllModals();"/>
-                        </h:panelGroup>
-                    </h:panelGroup>
+                <h:form id="shareForm">
+                    <h:outputLabel for="share-user" styleClass="control-label" value="Select user : " />
+                    <p:selectOneMenu styleClass="share-user" id="share-user" value="#{mainController.shareUser}">
+                        <f:selectItems value="#{mainController.users}" var="user" />
+                    </p:selectOneMenu>
+
+                    <p:commandButton value="Share" update=":tableForm:documents" ajax="true"
+                                     actionListener="#{mainController.shareDocument}" type="Submit"
+                                     styleClass="btn btn-primary btn-xs"
+                                     oncomplete="unblockUI(); fadeOutAllModals();"/>
                 </h:form>
             </h:panelGroup>
         </h:panelGroup>
