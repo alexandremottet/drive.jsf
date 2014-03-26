@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="template/layout.xhtml">
+
+    <ui:define name="header">
+        <h:outputStylesheet name="css/home.css"/>
+    </ui:define>
+	<ui:define name="body">
+        <h:panelGroup id="container" layout="block" styleClass="container">
+            <h:panelGroup styleClass="row" layout="block">
+                <h:panelGroup styleClass="col-md-12" layout="block">
+
+                    <!-- Return button -->
+                    <h:panelGroup class="btn-group pull-left backGroup" layout="block">
+                        <button id="backButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-arrow-left" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+
+                    <!-- Left panel buttons (download, share, delete) -->
+                    <h:panelGroup class="btn-group pull-left itemActionGroup" layout="block">
+                        <button id="downloadButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-save" layout="inline"></h:panelGroup>
+                        </button>
+                        <button id="shareButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-share" layout="inline"></h:panelGroup>
+                        </button>
+                        <button id="deleteButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon  glyphicon glyphicon-trash" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+
+                    <!-- Search form -->
+                    <h:form id="searchForm" styleClass="searchForm pull-right">
+                        <h:panelGroup styleClass="input-group" layout="block">
+                            <p:inputText id="searchInput" styleClass="form-control" value="#{mainController.searchInput}" label="searchInput"/>
+                            <p:watermark for="searchInput" value="Search ..." />
+                            <h:panelGroup styleClass="input-group-btn" layout="inline">
+                                <button id="searchButton" class="btn btn-default searchBtn"><h:panelGroup class="glyphicon glyphicon-search" layout="inline" /></button>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="hiddenAction">
+                            <p:commandButton value="Submit" id="commandSearchButton" update=":tableForm:documents, :tableForm:currentPath" ajax="true" actionListener="#{mainController.onSearch}" />
+                        </h:panelGroup>
+                    </h:form>
+
+                    <!-- Right panel buttons (upload, create folder) -->
+                    <h:panelGroup class="btn-group pull-right addFileGroup" layout="block">
+                        <button id="uploadFileButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon glyphicon-open" layout="inline"></h:panelGroup>
+                        </button>
+                        <button id="addFolderButton" type="button" class="btn btn-default">
+                            <h:panelGroup styleClass="glyphicon glyphicon-folder-open" layout="inline"></h:panelGroup>
+                        </button>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:form id="tableForm" enctype="multipart/form-data">
+                <!-- Hidden actions triggered with JavaScript -->
+                <h:panelGroup styleClass="hiddenAction">
+                    <!-- Download action -->
+                    <p:commandButton id="commandButtonDownload" ajax="false">
+                        <p:fileDownload value="#{mainController.downloadableDocument}" />
+                    </p:commandButton>
+
+                    <!-- Return action -->
+                    <p:commandButton id="commandButtonBack" update="documents, currentPath" ajax="true" action="#{mainController.onReturnToParent}" oncomplete="changeUrl();"/>
+
+                    <!-- Delete action -->
+                    <p:commandButton id="commandButtonDelete" update="documents" ajax="true" action="#{mainController.onDeleteDocument}" />
+
+                    <!-- Upload file action -->
+                    <p:fileUpload id="fileUploadComponent" update="documents" fileUploadListener="#{mainController.handleFileUpload}" mode="advanced" multiple="true" />
+                </h:panelGroup>
+
+                <!-- Data table context menu -->
+                <p:contextMenu for="documents">
+                    <p:menuitem value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="false">
+                        <p:fileDownload value="#{mainController.downloadableDocument}" />
+                    </p:menuitem>
+                    <p:menuitem value="Share" update="documents" icon="ui-icon-transferthick-e-w" id="shareItem"/>
+                    <p:menuitem value="Delete" update="documents" icon="ui-icon-trash" ajax="true" action="#{mainController.onDeleteDocument}"/>
+                </p:contextMenu>
+
+                <!-- Data table -->
+                <h:panelGroup class="panel panel-default" layout="block">
+                    <h:panelGroup class="panel-heading"  layout="block">Documents : <h:outputLabel id="currentPath" value="#{mainController.currentPath}"/></h:panelGroup>
+
+                    <p:dataTable id="documents" var="document" value="#{mainController.rootDocuments}"
+                                 rowKey="#{document.name}" stickyHeader="true"
+                                 selection="#{mainController.selectedDocument}" selectionMode="single" >
+
+                        <p:ajax event="rowDblselect" listener="#{mainController.onDocumentDblClck}"
+                                update="documents, :tableForm:currentPath" oncomplete="changeUrl();"/>
+
+                        <p:ajax event="rowSelect" listener="#{mainController.onDocumentSelect}" />
+
+                        <p:column headerText="Name">
+                            #{document.name}
+                        </p:column>
+
+                        <p:column headerText="Type">
+                            #{document.typeAsString}
+                        </p:column>
+
+                        <p:column headerText="Size" >
+                            #{document.dataid.dataLenghtAsString}
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </h:panelGroup>
+
+        <!-- AddFolder panel -->
+        <h:panelGroup id="addFolderPanel" layout="block" styleClass="panel panel-default modalPanel">
+            <button type="button" class="close closeDialog">&times;</button>
+            <h:panelGroup layout="block" styleClass="panel-body">
+                <h:form id="addFolderForm">
+                    <h:outputLabel for="folderName" value="Folder : " />
+                    <p:inputText id="folderName" value="#{mainController.folderName}" required="true"  label="folderName"/>
+                    <p:watermark for="folderName" value="Name ..." />
+
+                    <p:commandButton value="Add" update=":tableForm:documents" ajax="true"
+                                     actionListener="#{mainController.onAddFolder}" type="Submit"
+                                     styleClass="btn btn-primary btn-xs"
+                                     oncomplete="unblockUI(); fadeOutAllModals();"/>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+
+        <!-- Share panel -->
+        <h:panelGroup id="share" layout="block" styleClass="panel panel-default modalPanel">
+            <button type="button" class="close closeDialog">&times;</button>
+            <h:panelGroup layout="block" styleClass="panel-body">
+                <h:form>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="share-user" styleClass="col-sm-2 control-label" value="Select user" />
+                        <h:panelGroup layout="block" styleClass="col-sm-4">
+                            <p:selectOneMenu id="share-user" value="#{mainController.shareUser}">
+                                <f:selectItems value="#{mainController.users}" var="user" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:panelGroup layout="block" styleClass="col-sm-offset-2 col-sm-4">
+                            <p:commandButton value="Share" update=":tableForm:documents" ajax="true"
+                                             actionListener="#{mainController.shareDocument}" type="Submit"
+                                             styleClass="btn btn-primary btn-xs"
+                                             oncomplete="unblockUI(); fadeOutAllModals();"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </h:panelGroup>
+        </h:panelGroup>
+
+        <!-- Reset hidden section -->
+        <h:panelGroup styleClass="hiddenAction">
+            <h:form id="resetForm">
+                <p:commandButton id="commandResetButton" update=":tableForm:documents, :tableForm:currentPath" actionListener="#{mainController.onReset}" />
+            </h:form>
+        </h:panelGroup>
+	</ui:define>
+
+    <ui:define name="script">
+        <h:outputScript name="js/home.js"/>
+        <h:outputScript name="js/activeHome.js"/>
+    </ui:define>
+</ui:composition>
+
