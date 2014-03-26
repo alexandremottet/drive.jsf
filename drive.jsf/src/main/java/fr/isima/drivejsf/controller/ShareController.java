@@ -6,6 +6,7 @@ import fr.isima.drivejsf.ejb.UserServiceEJB;
 import fr.isima.drivejsf.entity.Data;
 import fr.isima.drivejsf.entity.Document;
 import fr.isima.drivejsf.entity.Share;
+import fr.isima.drivejsf.entity.User;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -14,6 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.io.*;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -51,8 +53,6 @@ public class ShareController implements Serializable {
      * Downloadable document From Me
      */
     private StreamedContent downloadableDocumentFM = null;
-
-    private String currentUserId = "1";
 
     private Document currentDocumentTM = null;
     private Share currentDocumentFM = null;
@@ -94,7 +94,8 @@ public class ShareController implements Serializable {
     }
 
     private void zipFolder (Document folder, ZipOutputStream zos, String root) throws IOException {
-        List<Document> children = documentService.getList(currentUserId, folder.getId().toString());
+        User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        List<Document> children = documentService.getList(user.getId().toString(), folder.getId().toString());
 
         for (Document child : children) {
             if (documentService.isFolder(child.getId().toString())) {
@@ -149,16 +150,19 @@ public class ShareController implements Serializable {
         Document current = currentDocumentTM;
 
         if (current != null) {
-            documentsTM = documentService.getList(currentUserId, current.getId().toString());
+            User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            documentsTM = documentService.getList(user.getId().toString(), current.getId().toString());
             currentPathTM = current.getUri();
         } else {
-            documentsTM = documentService.getSharedWithMeList(currentUserId);
+            User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            documentsTM = documentService.getSharedWithMeList(user.getId().toString());
             currentPathTM = "";
         }
     }
 
     private void updateFM() {
-        documentsFM = documentService.getSharedList(currentUserId);
+        User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        documentsFM = documentService.getSharedList(user.getId().toString());
         currentPathFM = "";
     }
 

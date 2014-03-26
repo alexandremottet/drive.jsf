@@ -33,7 +33,6 @@ public class AuthController {
     private String displayName;
     private String accessToken;
     private AccessTokenResponse authResponse;
-    private User authenticatedUser = null;
 
     private final String redirect_url = "http://localhost:8080/auth.xhtml";
     private final String CLIENT_ID = "951659947330-77kbd9kru1nq8r0fv22t2jngiace13gh.apps.googleusercontent.com";
@@ -67,15 +66,7 @@ public class AuthController {
     }
 
     public User getAuthenticatedUser() {
-        return authenticatedUser;
-    }
-
-    public void setAuthenticatedUser(User authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
-    }
-
-    public boolean isUserAuthenticated() {
-        return (authenticatedUser != null);
+        return (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
     }
 
     public void onAuth () {
@@ -139,11 +130,13 @@ public class AuthController {
             JSONObject object = iterator.next();
             email = (String)object.get("value");
 
+            User authenticatedUser;
             authenticatedUser = userService.getUserWithEmail(email);
             if (authenticatedUser == null) {
                 authenticatedUser = userService.createUser(email, displayName);
                 System.out.println("New user created : " + authenticatedUser.getEmail());
             }
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", authenticatedUser);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
         } catch (Exception e) {
@@ -152,8 +145,7 @@ public class AuthController {
         }
     }
 
-    public void
-    logout() {
+    public void logout() {
         onLogout();
 
         try {
@@ -163,9 +155,19 @@ public class AuthController {
         }
     }
 
+    public void checkLogin() {
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user") == null) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void onLogout() {
         email = "";
         displayName = "";
-        authenticatedUser = null;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
     }
 }

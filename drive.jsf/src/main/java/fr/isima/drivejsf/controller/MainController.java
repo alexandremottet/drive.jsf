@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import fr.isima.drivejsf.ejb.DocumentServiceEJB;
 import fr.isima.drivejsf.ejb.ShareServiceEJB;
@@ -31,7 +32,6 @@ public class MainController implements Serializable {
     private List<Document> rootDocuments;
     private Document selectedDocument = null;
     private StreamedContent downloadableDocument = null;
-    private String currentUserId = "1";
     private Document currentDocument = null;
     private List<String> users;
     private String shareUser;
@@ -50,7 +50,8 @@ public class MainController implements Serializable {
 
     @PostConstruct
     private void postConstruct() {
-        rootDocuments = documentService.getList(currentUserId, null);
+        User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        rootDocuments = documentService.getList(user.getId().toString(), null);
         users = userService.getLoginList();
     }
 
@@ -64,7 +65,8 @@ public class MainController implements Serializable {
     }
 
     private void zipFolder (Document folder, ZipOutputStream zos, String root) throws IOException {
-        List<Document> children = documentService.getList(currentUserId, folder.getId().toString());
+        User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        List<Document> children = documentService.getList(user.getId().toString(), folder.getId().toString());
 
         for (Document child : children) {
             if (documentService.isFolder(child.getId().toString())) {
@@ -102,13 +104,15 @@ public class MainController implements Serializable {
 
         if (current != null) {
             try {
-                rootDocuments = documentService.getList(currentUserId, current.getId().toString());
+                User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+                rootDocuments = documentService.getList(user.getId().toString(), current.getId().toString());
                 currentPath = current.getUri();
             } catch (NoDataFoundException noDataException) {
                 System.out.println("The document " + current.getName() + " is not a folder.");
             }
         } else {
-            rootDocuments = documentService.getList(currentUserId, null);
+            User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            rootDocuments = documentService.getList(user.getId().toString(), null);
             currentPath = "";
 
         }
@@ -207,7 +211,8 @@ public class MainController implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        documentService.addDocument(event.getFile(), currentDocument, currentUserId);
+        User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        documentService.addDocument(event.getFile(), currentDocument, user.getId().toString());
         updateRootDocuments();
     }
 
@@ -233,7 +238,8 @@ public class MainController implements Serializable {
     }
 
     public void onAddFolder() {
-        documentService.addFolder(folderName, currentDocument, currentUserId);
+        User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        documentService.addFolder(folderName, currentDocument, user.getId().toString());
 
         updateRootDocuments();
     }
@@ -242,7 +248,8 @@ public class MainController implements Serializable {
         if (!searchInput.isEmpty()) {
             currentPath = "Search results";
             currentDocument = null;
-            rootDocuments = documentService.searchDocuments(searchInput, currentUserId);
+            User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            rootDocuments = documentService.searchDocuments(searchInput, user.getId().toString());
         } else {
             onReset();
         }

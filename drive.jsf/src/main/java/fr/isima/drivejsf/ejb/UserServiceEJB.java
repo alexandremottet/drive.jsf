@@ -6,14 +6,13 @@ import fr.isima.drivejsf.exception.NoDataFoundException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
+import javax.ejb.Stateful;
 import java.util.List;
 
 @Singleton
 @LocalBean
 public class UserServiceEJB {
-
     public UserServiceEJB() {
-    	
     }
 
     public User getUser (String userId) {

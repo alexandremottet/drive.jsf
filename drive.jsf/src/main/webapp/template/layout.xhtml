@@ -32,22 +32,25 @@
             </h:panelGroup>
 
             <h:panelGroup styleClass="collapse navbar-collapse" layout="block">
-                <ul class="nav navbar-nav">
-                    <li id="homeFrame"><a href="/home.xhtml" onclick="resetTable();">Home</a></li>
-                    <li id="sharedFrame"><a href="/shared.xhtml" onclick="resetTable();">Shared</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <h:outputLink rendered="#{authController.authenticatedUser == null}" value="#{authController.code}">
-                            <h:panelGroup styleClass="glyphicon glyphicon-user navIcon" layout="inline"/>Authenticate
-                        </h:outputLink>
-                        <h:outputLink rendered="#{authController.authenticatedUser != null}" value="/logout.xhtml">
-                            <h:panelGroup styleClass="glyphicon glyphicon-off navIcon" layout="inline"/>Logout
-                        </h:outputLink>
-                    </li>
-                    <li></li>
-                </ul>
+                <h:panelGroup rendered="#{authController.authenticatedUser != null}">
+                    <ul class="nav navbar-nav">
+                        <li id="homeFrame"><a href="/home.xhtml" onclick="resetTable();">Home</a></li>
+                        <li id="sharedFrame"><a href="/shared.xhtml" onclick="resetTable();">Shared</a></li>
+                    </ul>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <h:outputLink rendered="#{authController.authenticatedUser == null}" value="#{authController.code}">
+                                <h:panelGroup styleClass="glyphicon glyphicon-user navIcon" layout="inline"/>Authenticate
+                            </h:outputLink>
+                            <h:outputLink rendered="#{authController.authenticatedUser != null}" value="/logout.xhtml">
+                                <h:panelGroup styleClass="glyphicon glyphicon-off navIcon" layout="inline"/>Logout
+                            </h:outputLink>
+                        </li>
+                        <li></li>
+                    </ul>
+                </h:panelGroup>
             </h:panelGroup>
         </h:panelGroup>
 
