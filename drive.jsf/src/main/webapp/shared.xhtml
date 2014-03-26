@@ -170,6 +170,13 @@
                 </h:panelGroup>
             </h:form>
         </h:panelGroup>
+
+        <!-- Reset hidden section -->
+        <h:panelGroup styleClass="hiddenAction">
+            <h:form id="resetForm">
+                <p:commandButton id="commandResetButton" update=":tableFormTM:documentsTM, :tableFormFM:documentsFM, :tableFormTM:currentPathTM" actionListener="#{shareController.onReset}" />
+            </h:form>
+        </h:panelGroup>
 	</ui:define>
 
     <ui:define name="script">

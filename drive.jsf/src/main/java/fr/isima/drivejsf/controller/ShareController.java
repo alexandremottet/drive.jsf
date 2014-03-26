@@ -71,8 +71,8 @@ public class ShareController implements Serializable {
 
     @PostConstruct
     private void postConstruct() {
-        documentsTM = documentService.getSharedWithMeList(currentUserId);
-        documentsFM = documentService.getSharedList(currentUserId);
+        updateFM();
+        updateTM();
     }
 
     private void setFileStreamedContentTM(Document document) {
@@ -158,15 +158,8 @@ public class ShareController implements Serializable {
     }
 
     private void updateFM() {
-        Document current = currentDocumentFM.getDocid();
-
-        /*if (current != null) {
-            documentsFM = documentService.getList(currentUserId, current.getId().toString());
-            currentPathFM = current.getUri();
-        } else {*/
-            documentsFM = documentService.getSharedList(currentUserId);
-            currentPathFM = "";
-        //}
+        documentsFM = documentService.getSharedList(currentUserId);
+        currentPathFM = "";
     }
 
     public List<Document> getDocumentsTM() {
@@ -235,7 +228,9 @@ public class ShareController implements Serializable {
     }
 
     public StreamedContent getDownloadableDocumentFM() {
-        Document current = selectedDocumentFM.getDocid();
+        Document current = null;
+        if (selectedDocumentFM != null)
+            selectedDocumentFM.getDocid();
 
         if (current != null) {
             if (documentService.isFolder(current.getId().toString())) {
@@ -262,7 +257,6 @@ public class ShareController implements Serializable {
     public void onDocumentDblClckTM() {
         if (selectedDocumentTM != null) {
             currentDocumentTM = selectedDocumentTM;
-
             updateTM();
         }
     }
@@ -270,7 +264,6 @@ public class ShareController implements Serializable {
     public void onDocumentDblClckFM() {
         if (selectedDocumentFM != null) {
             currentDocumentFM = selectedDocumentFM;
-
             updateFM();
         }
     }
@@ -286,7 +279,6 @@ public class ShareController implements Serializable {
     public void onReturnToParentTM() {
         if (documentsTM != null && currentDocumentTM != null) {
             currentDocumentTM = currentDocumentTM.getParentid();
-
             updateTM();
         }
     }
@@ -294,7 +286,24 @@ public class ShareController implements Serializable {
     public void undoShareFM () {
         if (selectedDocumentFM != null) {
             shareService.unshare(selectedDocumentFM);
+            updateTM();
+            updateFM();
         }
 
+    }
+
+    public void onReset() {
+        documentsFM = null;
+        documentsFM = null;
+        selectedDocumentTM = null;
+        selectedDocumentFM = null;
+        currentDocumentTM = null;
+        currentDocumentFM = null;
+        currentPathFM = "";
+        currentPathTM = "";
+
+        postConstruct();
+        updateTM();
+        updateFM();
     }
 }
