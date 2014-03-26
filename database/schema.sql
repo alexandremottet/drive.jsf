@@ -115,6 +115,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
+-- Contenu de la table `user`
+--
+
+INSERT INTO `user` (`id`, `login`, `email`) VALUES
+(1, 'drusy', 'kevin.renella@gmail.com'),
+(2, 'aleanar', 'mottetalexandre@gmail.com');
+
+--
+
+
 --
 -- Contraintes pour les tables exportées
 --

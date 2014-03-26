@@ -144,9 +144,22 @@ public class AuthController {
                 authenticatedUser = userService.createUser(email, displayName);
                 System.out.println("New user created : " + authenticatedUser.getEmail());
             }
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
         } catch (Exception e) {
             e.printStackTrace();
             onLogout();
+        }
+    }
+
+    public void
+    logout() {
+        onLogout();
+
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
