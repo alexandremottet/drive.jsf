@@ -53,6 +53,7 @@ public class MainController implements Serializable {
         User user = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
         rootDocuments = documentService.getList(user.getId().toString(), null);
         users = userService.getLoginList();
+        users.remove(user.getLogin());
     }
 
     private void setFileStreamedContent(Document document) {
