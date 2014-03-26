@@ -9,11 +9,9 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import fr.isima.drivejsf.ejb.UserServiceEJB;
 import fr.isima.drivejsf.entity.User;
-import fr.isima.drivejsf.exception.NoDataFoundException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -77,7 +75,7 @@ public class AuthController {
         String error = request.getParameter("error");
         if (error != null) {
             System.out.println("Login failed : " + error);
-            onLogout();
+            logout();
             return;
         }
 
