@@ -29,6 +29,7 @@
     background-color: #f5f5f5;
 }
 #footer .container {
+    text-align: center;
     width: auto;
     max-width: 680px;
     padding: 0 5px;
