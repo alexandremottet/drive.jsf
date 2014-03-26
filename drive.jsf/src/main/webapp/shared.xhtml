@@ -8,8 +8,16 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	template="template/layout.xhtml">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{authController.checkLogin}" />
+    </f:metadata>
+
     <ui:define name="header">
         <h:outputStylesheet name="css/home.css"/>
+
+        <title>
+            Drive.jsf - Shared documents
+        </title>
     </ui:define>
 	<ui:define name="body">
         <h:panelGroup id="container" layout="block" styleClass="container">
