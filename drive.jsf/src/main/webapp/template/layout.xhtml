@@ -45,7 +45,7 @@
                                 <h:panelGroup styleClass="glyphicon glyphicon-user navIcon" layout="inline"/>Authenticate
                             </h:outputLink>
                             <h:outputLink rendered="#{authController.authenticatedUser != null}" value="/logout.xhtml">
-                                <h:panelGroup styleClass="glyphicon glyphicon-off navIcon" layout="inline"/>Logout
+                                <h:panelGroup styleClass="glyphicon glyphicon-off navIcon" layout="inline"/>Logout (#{authController.email})
                             </h:outputLink>
                         </li>
                         <li></li>

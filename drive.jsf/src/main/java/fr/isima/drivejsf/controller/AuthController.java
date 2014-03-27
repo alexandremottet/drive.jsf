@@ -63,6 +63,10 @@ public class AuthController {
         return email;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public User getAuthenticatedUser() {
         return (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
     }
