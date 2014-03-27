@@ -8,66 +8,55 @@ Drive.jsf est une solution équivalente à Google Drive, implémentée en JSF av
 Auteurs
 ---------
 - Kevin Renella <kevin.renella@gmail.com>
-- Alexandre Mottet <alexandre.mottet@gmail.com>
+- Alexandre Mottet <mottetalexandre@gmail.com>
 
 
 Mise en place du projet
 ---------
-Tout d'abord, il est indispensable de procéder au téléchargement des dépendances du projet. Pour cela, à la racine du projet :
-
-	./composer.phar install
+Nous avons utilisé Maven pour gérer les dépendances de notre projet (cf. pom.xml). Nous avons utilisé l'IDE IntelliJ pour construire et déployer notre application sur le serveur [TomEE][1] version 1.6.0.
 	
-Importez le fichier de base de données dans votre base locale :
+Tout d'abord, importez le fichier de base de données dans votre base locale :
 
-	/HotspotMap/app/Resources/sql/HotspotMap.sql
+	/database/schema.sql
 	
-Définissez les informations de connexion de la base de données dans le fichier `index.php` :
+Définissez les informations de connexion de la base de données dans le fichier `hibernate.cfg.xml ` :
 	
-	$GLOBALS['DB_DSN'] = 'mysql:host=localhost:3306;dbname=HotspotMap';
-    $GLOBALS['DB_USER'] = 'root';
-    $GLOBALS['DB_PASSWD'] = 'root';
-
-Dans le répertoire du projet, lancer le serveur php avec le dossier `web` comme racine :
-
-	php -S localhost:8090 -t web/
+	/drive.jsf/src/main/resources/hibernate.cfg.xml 
 	
-Accédez au site avec l'url `localhost:8090`
+Une fois l'application déployée, vous aurez accés à Drive.jsf, notre solution de gestion de fichier en ligne.
 
 Fonctionnalités
 ---------
 Les fonctionnalités implémentées sont les suivantes :
 
-- Implémentation d'une API REST avec des réponses disponibles en xml, json et html
-- Authentification d'un administrateur (utilisation de Silex pour l'authentification, avec gestion de rôles)
-- Recherche de la position actuelle et affichage des lieux les plus proches
-- Utilisation d'une carte Google Map (JavaScript) afin d'afficher les Hotspots
-- Interface utilisateur avec page dynamique par l'utilisation de l'API REST (requêtes AJAX)
-- Ajout d'un commentaire sur les Hotspots
-- Ajout / modification d'un Hotspot
-- Un administrateur authentifié peut/doit administrer les lieux et les commentaires ajouté ou mis à jour par un utilisateur
-- Bouton *follow* Twitter
-- Bouton *tweet* 
-- Recherche d'un lieu par l'adresse ou les coordonnées géographiques
+- Authentification OAuth Google pour se connecter à l'application
+- Déconnexion avec retour à la page d'accueil
+- Gestion d'une page 404 personnalisée
+- Page d'accueil personnalisée qui incite l'utilisateur à se connecter.
+- Page de gestion des fichier avec les possibilités suivantes :
+    - Navigation dans l'arborescence des fichier par double click sur les dossiers
+    - Suppression d'un fichier / dossier (Si suppression d'un dossier, suppression automatique de tous les fichiers contenus)
+    - Téléchargement d'un fichier
+    - Téléchargement d'un dossier (Le dossier et tout son contenu est zippé avant d'être téléchargé)
+    - Partage d'un dossier / fichier avec un autre utilisateur
+    - Upload d'un fichier (ou plusieurs)
+    - Création d'un dossier au nom spécifié
+    - Recherche dans les documents possédés
+- Page de gestion des dossiers / fichiers partagés
+    - Vision des dossiers / fichiers que l'on a partagé
+    - Vision des dossiers / fichiers qui nous sont partagés
+    - Navigation dans les dossiers
+    - Suppression d'un partage
 
-Les fonctionnalités manquantes à implémenter sont :
+Pour ce projet, nous avons utilisé une structure de base de donnée intelligente qui stock les données de manière découplée. Cette méthode nous permet la duplication de fichiers illimitée à coût réduit. Un fichier a un lien logique vers une donnée. Pour savoir si le data d'un fichier existe en base, nous utilisons le checksum MD5 des données.
 
-- Filtrage des lieux par critères
-- Par souplesse d'utilisation, un utilisateur ne doit pas être authentifié pour consulter les Hotspot ou pour en ajouter
-- Amélioration du tweet (ajout du lieux courant)
-- Découplage du data mapper et de la connexion pour améliorer la maintenabilité
-- Chargement dynamique des lieux sur la carte (lazy loading)
-- Utiliser HATEOAS pour API REST
+Schema de la base de données : 
 
-Utilisation
+![Schema BDD][2]
+
+Screenshots
 ---------
-- La création d'un lieu se fait sans authentification mais doit être modérée par l'administrateur.
-- La suppression d'un lieu se fait uniquement par l'administrateur.
-- La modification d'un lieu se fait sans authentification mais doit être modérée par l'administrateur.
-- La création d'un commentaire se fait sans authentification mais doit être modérée par l'administrateur.
-- La suppression d'un lieu se fait uniquement par l'administrateur.
-- La modération se fait dans l'interface d'Admin uniquement après authentification.
 
-Accès admin dev:
 
-- login : admin
-- pass  : foo 
+  [1]: http://tomee.apache.org/apache-tomee.html
+  [2]: /database/schema.png
