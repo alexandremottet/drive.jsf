@@ -47,6 +47,7 @@ Les fonctionnalités implémentées sont les suivantes :
     - Vision des dossiers / fichiers qui nous sont partagés
     - Navigation dans les dossiers
     - Suppression d'un partage
+- Gestion des menus contextuels
 
 Pour ce projet, nous avons utilisé une structure de base de donnée intelligente qui stock les données de manière découplée. Cette méthode nous permet la duplication de fichiers illimitée à coût réduit. Un fichier a un lien logique vers une donnée. Pour savoir si le data d'un fichier existe en base, nous utilisons le checksum MD5 des données.
 
@@ -56,7 +57,40 @@ Schema de la base de données :
 
 Screenshots
 ---------
+Context Menu
 
+![Context Menu][3]
+
+Folder Popup
+
+![Folder Popup][4]
+
+Home Screen
+
+![Home Screen][5]
+
+Search Table
+
+![Search Table][6]
+
+Share Popup
+
+![Share popup][7]
+
+Share Screen
+
+![Share Screen][8]
+
+Welcome Screen
+
+![Welcome Screen][9]
 
   [1]: http://tomee.apache.org/apache-tomee.html
   [2]: /database/schema.png
+  [3]: /screenshots/context_menu.png
+  [4]: /screenshots/folder_popup.png
+  [5]: /screenshots/home_screen.png
+  [6]: /screenshots/search_table.png
+  [7]: /screenshots/share_popup.png
+  [8]: /screenshots/share_screen.png
+  [9]: /screenshots/welcome_screen.png
