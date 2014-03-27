@@ -22,7 +22,11 @@ Tout d'abord, importez le fichier de base de données dans votre base locale :
 Définissez les informations de connexion de la base de données dans le fichier `hibernate.cfg.xml ` :
 	
 	/drive.jsf/src/main/resources/hibernate.cfg.xml 
-	
+
+Déployez votre application sur l'adresse suivante pour que la configuration OAuth Google reconnaisse l'application :
+
+	http://localhost:8080/
+
 Une fois l'application déployée, vous aurez accés à Drive.jsf, notre solution de gestion de fichier en ligne.
 
 Fonctionnalités
@@ -33,8 +37,8 @@ Les fonctionnalités implémentées sont les suivantes :
 - Déconnexion avec retour à la page d'accueil
 - Gestion d'une page 404 personnalisée
 - Page d'accueil personnalisée qui incite l'utilisateur à se connecter.
-- Page de gestion des fichier avec les possibilités suivantes :
-    - Navigation dans l'arborescence des fichier par double click sur les dossiers
+- Page de gestion des fichiers avec les possibilités suivantes :
+    - Navigation dans l'arborescence des fichiers par double click sur les dossiers
     - Suppression d'un fichier / dossier (Si suppression d'un dossier, suppression automatique de tous les fichiers contenus)
     - Téléchargement d'un fichier
     - Téléchargement d'un dossier (Le dossier et tout son contenu est zippé avant d'être téléchargé)
