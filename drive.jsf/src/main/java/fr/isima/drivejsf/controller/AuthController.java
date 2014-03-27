@@ -167,6 +167,16 @@ public class AuthController {
         }
     }
 
+    public void checkLoginIndex() {
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user") != null) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void onLogout() {
         email = "";
         displayName = "";

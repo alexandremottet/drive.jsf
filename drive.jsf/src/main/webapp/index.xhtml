@@ -8,6 +8,10 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	template="template/layout.xhtml">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{authController.checkLoginIndex}" />
+    </f:metadata>
+
     <ui:define name="header">
         <title>
             Drive.jsf - Welcome
